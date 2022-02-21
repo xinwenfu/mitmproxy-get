@@ -47,7 +47,8 @@ DHT_Unified dht(DHTPIN, DHTTYPE);
 
 
 void setup() {
-  Serial.begin(115200); 
+  Serial.begin(115200);
+  dht.begin();
 
   WiFi.begin(ssid, password);
   Serial.println("Connecting");
