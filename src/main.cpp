@@ -47,7 +47,7 @@ unsigned long timerDelay = 5000;
 //   https://learn.adafruit.com/dht/overview
 
 DHT_Unified dht(DHTPIN, DHTTYPE);
-
+// Replace the following ca certificate with your server's certificate
 #ifdef FU_HTTPS
 const char* root_ca= \
 "-----BEGIN CERTIFICATE-----\n" \
