@@ -9,7 +9,7 @@ Once downloaded to Ubuntu VM, start VS code and use *File*->*Open Folder...* to 
 
 [![Demo Video](https://img.youtube.com/vi/YTuX5_tq2s8/0.jpg)](https://youtu.be/YTuX5_tq2s8)
 
-2. Copy [test_get.php]{web/test_get.php} to /var/www/html.
+2. Copy [test_get.php](web/test_get.php) to /var/www/html.
 
 3. Make sure the code has the following macro defintion. By defining the directive *FU_HTTPS*, 
 ```
