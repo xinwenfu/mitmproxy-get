@@ -18,7 +18,7 @@ The hard part is to enable https with Apache at Ubuntu. Otherwise, the setup loo
 
 2. Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu.
 
-3. Make sure the code has the following macro defintion. With the directive *FU_HTTPS*, the code connects to the https server.
+3. Make sure the code has the following macro defintion of *FU_HTTPS* to connects to the https server.
 ```
 #define FU_HTTPS
 ```
