@@ -17,7 +17,7 @@
 #include <HTTPClient.h>
 
 // Replace with your network credentials
-const char* ssid = "SSIF";
+const char* ssid = "SSID";
 const char* password = "PASSWORD";
 
 #define FU_HTTPS
