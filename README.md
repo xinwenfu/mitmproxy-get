@@ -6,7 +6,7 @@ Once downloaded to Ubuntu VM, start VS code and use *File*->*Open Folder...* to 
 
 ## MITM against HTTPS
 1. Enable https on Apache web server of Ubuntu. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/). The following video shows an example.
-   - Here is an example https configuration file [my-server.conf](wwww/my-server.conf)
+   - Here is an example https configuration file [my-server.conf](web/my-server.conf)
 
 [![Demo Video](https://img.youtube.com/vi/YTuX5_tq2s8/0.jpg)](https://youtu.be/YTuX5_tq2s8)
 
