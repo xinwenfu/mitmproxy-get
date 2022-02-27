@@ -17,8 +17,8 @@
 #include <HTTPClient.h>
 
 // Replace with your network credentials
-const char* ssid = "CWS5Q";
-const char* password = "LN7S3S282Q7NLCD8";
+const char* ssid = "SSIF";
+const char* password = "PASSWORD";
 
 #define FU_HTTPS
 
@@ -47,6 +47,7 @@ unsigned long timerDelay = 5000;
 //   https://learn.adafruit.com/dht/overview
 
 DHT_Unified dht(DHTPIN, DHTTYPE);
+
 // Replace the following ca certificate with your server's certificate
 #ifdef FU_HTTPS
 const char* root_ca= \
