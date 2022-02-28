@@ -13,6 +13,7 @@ The hard part is to enable https with Apache at Ubuntu. Otherwise, the setup loo
 
 1. Enable https on Apache web server of Ubuntu. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/). The following video shows an example.
    - Here is an example https configuration file [my-server.conf](web/my-server.conf)
+   - Do NOT protect the private key of the web server with a password since the web server will not be able to start with user interaction
 
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
