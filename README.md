@@ -17,6 +17,7 @@ The hard part is to enable https with Apache at Ubuntu. Otherwise, the setup loo
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
 2. Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu.
+   - The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
 
 3. Make sure the code has the following macro defintion of *FU_HTTPS* to connects to the https server.
 ```
