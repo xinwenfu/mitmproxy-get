@@ -128,11 +128,11 @@ void loop() {
 
       String serverPath = serverName + "?Temperature="+myTemperatureString+"&Humidity="+myHumidityString;
      
+      // Your Domain name with URL path or IP address with path
       #ifdef FU_HTTP
       http.begin(serverPath.c_str());
       #endif
 
-      // Your Domain name with URL path or IP address with path
       #ifdef FU_HTTPS
       http.begin(serverPath.c_str(), root_ca);
       #endif
