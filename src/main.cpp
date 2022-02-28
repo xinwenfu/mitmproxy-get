@@ -4,23 +4,25 @@
 // Unified Sensor Library Example
 // Written by Tony DiCola for Adafruit Industries
 // Released under an MIT license.
-
 // REQUIRES the following Arduino libraries:
 // - DHT Sensor Library: https://github.com/adafruit/DHT-sensor-library
 // - Adafruit Unified Sensor Lib: https://github.com/adafruit/Adafruit_Sensor
-
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include <DHT_U.h>
+
 // Load Wi-Fi library
 #include <WiFi.h>
+
+// Load http and https client library
 #include <HTTPClient.h>
 
 // Replace with your network credentials
 const char* ssid = "SSID";
 const char* password = "PASSWORD";
 
-#define FU_HTTPS
+#define FU_HTTPS // Use https client
+// #define FU_HTTP // Use http client
 
 //Your Domain name with URL path or IP address with path
 String serverName = "https://192.168.1.7/test_get.php";
@@ -32,7 +34,6 @@ unsigned long lastTime = 0;
 //unsigned long timerDelay = 600000;
 // Set timer to 5 seconds (5000)
 unsigned long timerDelay = 5000;
-
 
 #define DHTPIN 22     // Digital pin connected to the DHT sensor 
 // Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
