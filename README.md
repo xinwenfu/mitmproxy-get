@@ -1,4 +1,4 @@
-# mitmproxy-get
+# MITM attacks against http and https through mitmproxy
 
 This project requires the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware sends DHT11/DHT22 data to a web server, whose IP address is hard-coded into the code. Therefore, an apache web server shall be installed at Ubuntu VM.
 
