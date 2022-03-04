@@ -1,5 +1,12 @@
 # MITM attacks against http and https through mitmproxy
 
+mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP, Websocket, and generic TCP flows. mitmproxy tools contain three front-end tools which work with the same core proxy. 
+- mitmproxy: an interactive, SSL/TLS-capable intercepting proxy with a console interface.
+- mitmweb: a web-based interface for mitmproxy.
+- mitmdump: the command-line version of mitmproxy.
+
+
+
 This project requires the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware sends DHT11/DHT22 data to a web server, whose IP address is hard-coded into the code. Therefore, an apache web server shall be installed at Ubuntu VM.
 
 Once downloaded to Ubuntu VM, start VS code and use *File*->*Open Folder...* to load the project.
