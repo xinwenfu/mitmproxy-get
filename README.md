@@ -13,7 +13,8 @@ This project requires the ES32 board, the installation of adafruit/DHT sensor li
 # Software setup
 
 ## Apache2 server
-Install Apache2 by running:
+
+### Install Apache2
 ```
 sudo apt update
 sudo apt install apache2c
@@ -26,8 +27,8 @@ The hard part is to enable https with Apache at Ubuntu. Enable https on Apache w
 
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
+### PHP script for processing http get request
 Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu. The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
-
 
 ## PHP
 Install PHP and Apache PHP module by running the following commands
