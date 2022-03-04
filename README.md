@@ -81,6 +81,9 @@ To enable the interception function, press i. You will see shown at the bottom o
 set intercept ``
 ```
 
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813305-2802e23d-1f0c-44ea-9ad0-75ab46a29d55.png">
+    
+    
 We use filter expressions “~u <regex>” to only intercept specific URLs and “~q” to only intercept requests. “&” is used to connect two expressions. More filter expressions can be found [here](https://docs.mitmproxy.org/stable/concepts-filters/).
 
 Type in *~u /test_get.php & ~q*, then press **ENTER**.
