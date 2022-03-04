@@ -30,15 +30,7 @@ The hard part is to enable https with Apache at Ubuntu. Otherwise, the setup loo
 2. Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu.
    - The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
 
-3. Make sure the code has the correct macro defintion 
-Enabke *FU_HTTPS* definition as follows to connects to the https server.
-```
-#define FU_HTTPS
-```
-Enabke *FU_HTTP* definition as follows to connects to the http server.
-```
-#define FU_HTTP
-```
+
 
 ## PHP
 Install PHP and Apache PHP module by running the following commands
@@ -57,6 +49,20 @@ Download mitmproxy
 sudo apt install mitmproxy
 ```
 
+## ESP32 firmware
+Download this project to Ubuntu VM, start VS code and use *File*->*Open Folder...* to load the project.
+
+The code supports both http and https conenctions through a macro definition in the code. 
+Make sure the code has the correct macro defintion 
+Enabke *FU_HTTPS* definition as follows to connects to the https server.
+```
+#define FU_HTTPS
+```
+Enabke *FU_HTTP* definition as follows to connects to the http server.
+```
+#define FU_HTTP
+```
+   
 # Redirecting traffic for interception
 mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, their ports 80 and 443 should be redirected to port the port mitmproxy listens on. (these chages will be recovered after next restart)
 
