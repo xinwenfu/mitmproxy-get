@@ -93,7 +93,6 @@ Press q to quit editing mode.
 Press a to resume the intercepted flow. You will find the changed values shown in your browser.
 
 To stop mitmproxy, Press Ctrl+c, then press y.
-![image](https://user-images.githubusercontent.com/69218457/156810975-6cf47f20-35af-452d-ba51-59a5024d09e4.png)
 
 ## Intercept and modify HTTP traffic (script) 
 
