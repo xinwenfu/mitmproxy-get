@@ -76,7 +76,7 @@ Visit http://<host ip>/test_get.php?Temperature=21&Humidity=20 and you will see 
 
 To intercept request with specific URLs, you need to enable the interception function and using specific filter expressions.
 
-To enable the interception function, press i. You will see shown at the bottom of the console.
+To enable the interception function, press **i**. You will see shown at the bottom of the console.
 ```
 set intercept ``
 ```
@@ -88,15 +88,24 @@ We use filter expressions “~u <regex>” to only intercept specific URLs and �
 
 Type in *~u /test_get.php & ~q*, then press **ENTER**.
 
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813514-106b113d-94c9-45da-9713-1de7bba0d2b2.png">
+
 Now let’s visit the same url again. This time, you will find your browser keeps loading. This is because the HTTP request is intercepted by mitmproxy. The intercepted requested is indicated with red text in the mitmproxy console.
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813624-1a20d41f-b619-409c-814a-7238449cb019.png">
 
 To modify the intercepted connection, put the focus (>>) on that flow using arrow keys and then press **ENTER** to open the details view.
 Press *e* to edit the flow. Select query by using arrow keys and press **ENTER**.
 
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813678-2b7f172b-4078-414c-9ed1-adc77d2aa1b3.png">
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813768-9589f8ae-c5a3-4fce-ab3b-536c2d95fbfa.png">    
+    
 Mitmproxy shows all query key and value pairs for editing.
 Select the value that you want to modify, and press ENTER to edit it.
 After finishing editing a value, press ESC to confirm it.
 
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813838-a72a6a8f-6ef1-4a8b-a803-b967b4b694aa.png">
+    
+    
 Press q to quit editing mode.
 Press a to resume the intercepted flow. You will find the changed values shown in your browser.
 
@@ -133,7 +142,12 @@ mitmdump –s <script_path>
 ```   
 You will see the responses from the server are modified.
 
-   
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814128-5dfd1fc2-5cc5-4bfa-b478-2817c04e1401.png">
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814169-664bedc2-7b6a-4d8c-93bb-fa7a7ea18c52.png">
+
+
+    
+    
 # MITM against HTTPS
 The hard part is to enable https with Apache at Ubuntu. Otherwise, the setup looks straightforward.
 
@@ -160,8 +174,12 @@ We first generate the required PEM format file by running command:
 ```
 sudo cat [self-signed key] [self-signed crt] > mitmCA
 ```
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814275-a5902383-fd6d-4bb1-ab1a-f857fa2bad08.png">
 
+    
 Now we can run mitmproxy or mitmdump with two options: 
 - *--certs *=/home/iot/mitmproxy/mitmCA.pem*: configure the self-signed cert
 - *--ssl-insecure*: do not verify server certs
    
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814329-847ef12d-0495-45f5-b832-7a39d7c30f92.png">
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814363-521ea263-546d-423f-9ecf-035172f04377.png">
