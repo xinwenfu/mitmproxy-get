@@ -4,7 +4,7 @@ mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP, Webso
 - mitmproxy: an interactive, SSL/TLS-capable intercepting proxy with a console interface.
 - mitmweb: a web-based interface for mitmproxy.
 - mitmdump: the command-line version of mitmproxy.
-
+We will learn using mitmproxy to modify HTTP query manually, and how to using mitmdump with python script  to modify HTTP query automatically.
 
 
 This project requires the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware sends DHT11/DHT22 data to a web server, whose IP address is hard-coded into the code. Therefore, an apache web server shall be installed at Ubuntu VM.
