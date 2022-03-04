@@ -52,51 +52,51 @@ Download this project to Ubuntu VM, start VS code and use *File*->*Open Folder..
 
 The code supports both http and https conenctions through a macro definition in the code. 
 Make sure the code has the correct macro defintion 
-Enabke *FU_HTTPS* definition as follows to connects to the https server.
+Enable *FU_HTTPS* definition as follows to connects to the https server.
 ```
 #define FU_HTTPS
 ```
-Enabke *FU_HTTP* definition as follows to connects to the http server.
+Enable *FU_HTTP* definition as follows to connects to the http server.
 ```
 #define FU_HTTP
 ```
    
-# Redirecting traffic for interception
-mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, their ports 80 and 443 should be redirected to port the port mitmproxy listens on. (these chages will be recovered after next restart)
+# MITMPROXY intercepting http traffic
+mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, their ports 80 and 443 should be redirected to the port mitmproxy listens on. Note: These chages will be recovered after next restart.
 
 Enable IP forwarding
 ```
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 
-Create an iptables ruleset that redirects the desired traffic to mitmproxy
+Create an iptables rule set that redirects the desired traffic to mitmproxy
 ```
 sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 ```
 
 # Start up mitmproxy
-To start up mitmproxy with console interface, open a command terminal in the directory of mitmproxy and type in
+To start up mitmproxy with the console interface, open a command terminal in the directory of mitmproxy and type in
 ```
 mitmproxy
 ```
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156812912-bef0527f-cade-4f3b-a5c9-9dec48b77a76.png">
 
-mitmproxy can be stopped by press Ctrl+c, then press y.
+mitmproxy can be stopped by press *Ctrl+c*, then press *y*.
 
 # MITM against HTTP
 
 ## Monitor HTTP flows
 Let’s test if mitmproxy can monitor HTTP flows.
 Open a web browser from a separate machine (e.g., your host computer). Don’t use the VM which runs mitmproxy because the [PREROUTING](https://serverfault.com/a/977515) table only redirects traffic from outside. 
-Visit http://<host ip>/test_get.php?Temperature=21&Humidity=20 and you will see the traffic in the mitmproxy console.
+Visit http://\<host ip>/test_get.php?Temperature=21&Humidity=20 and you will see the traffic in the mitmproxy console.
 
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156813138-732c53b1-12d3-4bb5-a2b2-c7bec05b34c4.png">
     
     
 ## Intercept and modify HTTP traffic (manually)
 
-To intercept request with specific URLs, you need to enable the interception function and using specific filter expressions.
+To intercept requests with specific URLs, you need to enable the interception function and using specific filter expressions.
 
 To enable the interception function, press **i**. You will see shown at the bottom of the console.
 ```
@@ -106,7 +106,7 @@ set intercept ``
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156813305-2802e23d-1f0c-44ea-9ad0-75ab46a29d55.png">
     
     
-We use filter expressions “~u <regex>” to only intercept specific URLs and “~q” to only intercept requests. “&” is used to connect two expressions. More filter expressions can be found [here](https://docs.mitmproxy.org/stable/concepts-filters/).
+We use filter expressions *~u \<regex>* to only intercept specific URLs and *~q* to only intercept requests. *&* is used to connect two expressions. More filter expressions can be found [here](https://docs.mitmproxy.org/stable/concepts-filters/).
 
 Type in *~u /test_get.php & ~q*, then press **ENTER**.
 
@@ -116,7 +116,7 @@ Now let’s visit the same url again. This time, you will find your browser keep
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156813624-1a20d41f-b619-409c-814a-7238449cb019.png">
 
 To modify the intercepted connection, put the focus (>>) on that flow using arrow keys and then press **ENTER** to open the details view.
-Press *e* to edit the flow. Select query by using arrow keys and press **ENTER**.
+Press *e* to edit the flow. Select a query by using arrow keys and press **ENTER**.
 
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156813678-2b7f172b-4078-414c-9ed1-adc77d2aa1b3.png">
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156813768-9589f8ae-c5a3-4fce-ab3b-536c2d95fbfa.png">    
@@ -127,24 +127,23 @@ After finishing editing a value, press ESC to confirm it.
 
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156813838-a72a6a8f-6ef1-4a8b-a803-b967b4b694aa.png">
     
-    
-Press q to quit editing mode.
-Press a to resume the intercepted flow. You will find the changed values shown in your browser.
+Press *q* to quit editing mode.
+Press *a* to resume the intercepted flow. You will find the changed values shown in your browser.
 
-To stop mitmproxy, Press Ctrl+c, then press y.
+To stop mitmproxy, Press *Ctrl+c*, then press *y*.
 
 ## Intercept and modify HTTP traffic (script) 
 
-We use mitmdump with python script to modify HTTP traffic sent from ESP32 automatically.
+We use *mitmdump* with python script to modify HTTP traffic sent from ESP32 automatically.
 Setup ESP32 and make sure that you can see responses from the server in the VS code console.
 
-Remember to recover redirected ports before you test ESP32 without mitmproxy involved, otherwise ESP32 will failed to connect the server. The recovery can be done by restarting the VM, or by running commands: 
+Remember to reset redirected ports before you test ESP32 without mitmproxy involved, otherwise ESP32 will failed to connect the server. The recovery can be done by restarting the VM, or by running commands: 
 ```
 sudo iptables -t nat -F
 sudo sysctl -w net.ipv4.ip_forward=0
 ```
 
-Now let’s create the python script in the VM. Some example scripts can be found [here](https://docs.mitmproxy.org/stable/addons-examples/).
+Now let’s create the python script in the VM. Example scripts can be found [here](https://docs.mitmproxy.org/stable/addons-examples/).
 Create a .py file (http-query.py in the example). Copy the following code to this file and save it. Remember to replace <host_ip> with your VM’s ip.
 ```
 """Modify HTTP query parameters."""
@@ -167,12 +166,10 @@ You will see the responses from the server are modified.
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156814128-5dfd1fc2-5cc5-4bfa-b478-2817c04e1401.png">
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156814169-664bedc2-7b6a-4d8c-93bb-fa7a7ea18c52.png">
 
-
-    
     
 # MITM against HTTPS
 
-mitmproxy is able to decrypt encrypted traffics on the fly (more information can be found here). There are two methods to enable such function :
+mitmproxy is able to decrypt encrypted traffic on the fly (more information can be found here). There are two methods to enable such function :
 - Install mitmproxy’s CA on the client device.
 - Use the self-signed server certificate as mitmproxy’s CA.  
 Since our client ESP32 does not have functions for installing trusted CA, we use the second method.
