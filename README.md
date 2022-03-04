@@ -53,6 +53,17 @@ To start up mitmproxy with console interface, open a command terminal in the dir
 mitmproxy
 ```
 mitmproxy can be stopped by press Ctrl+c, then press y.
+
+# MITM against HTTP
+   
+Let’s test if mitmproxy can monitor HTTP flows.
+Open a web browser from a separate machine (e.g., your host computer). Don’t use the VM which runs mitmproxy because the [PREROUTING](https://serverfault.com/a/977515) table only redirects traffic from outside. 
+Visit http://<host ip>/test_get.php?Temperature=21&Humidity=20 and you will see the traffic in the mitmproxy console.
+
+   
+   
+   
+   
    
 This project requires the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware sends DHT11/DHT22 data to a web server, whose IP address is hard-coded into the code. Therefore, an apache web server shall be installed at Ubuntu VM.
 
@@ -60,7 +71,7 @@ Once downloaded to Ubuntu VM, start VS code and use *File*->*Open Folder...* to 
 
 The code supports both http and https conenctions through a macro definition in the code. By default, https is used. 
 
-## MITM against HTTP
+
 
 ## MITM against HTTPS
 The hard part is to enable https with Apache at Ubuntu. Otherwise, the setup looks straightforward.
