@@ -58,7 +58,7 @@ To start up mitmproxy with console interface, open a command terminal in the dir
 ```
 mitmproxy
 ```
-<img width="328" alt="image" src="https://user-images.githubusercontent.com/69218457/156812912-bef0527f-cade-4f3b-a5c9-9dec48b77a76.png">
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156812912-bef0527f-cade-4f3b-a5c9-9dec48b77a76.png">
 
 mitmproxy can be stopped by press Ctrl+c, then press y.
 
