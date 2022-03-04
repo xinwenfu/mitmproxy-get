@@ -28,7 +28,31 @@ sudo systemctl restart apache2.service
 Put your PHP script (e.g., test_get.php) under path /var/www/html. You can test the server by visiting the following link in a browser: http://<local IP>/test_get.php
 
 ## mitmproxy
+Download mitmproxy
+```
+sudo apt install mitmproxy
+```
 
+# Redirecting traffic for interception
+mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, their ports 80 and 443 should be redirected to port the port mitmproxy listens on. (these chages will be recovered after next restart)
+
+Enable IP forwarding
+```
+sudo sysctl -w net.ipv4.ip_forward=1
+```
+
+Create an iptables ruleset that redirects the desired traffic to mitmproxy
+```
+sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+```
+
+# Start up mitmproxy
+To start up mitmproxy with console interface, open a command terminal in the directory of mitmproxy and type in
+```
+mitmproxy
+```
+mitmproxy can be stopped by press Ctrl+c, then press y.
    
 This project requires the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware sends DHT11/DHT22 data to a web server, whose IP address is hard-coded into the code. Therefore, an apache web server shall be installed at Ubuntu VM.
 
