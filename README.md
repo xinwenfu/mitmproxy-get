@@ -7,10 +7,11 @@ mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS,
 
 We will learn using mitmproxy to modify HTTP/HTTPS query manually, and how to using mitmdump with python script to modify HTTP/HTTPS query automatically.
 
-# Hardware setyp
+# Hardware setup
 This project requires the ES32 board, the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware of the ESP32 sends DHT11/DHT22 data to a web server at a Ubuntu VM. The IP address of the web server is hard-coded into the formware code. 
 
 # Software setup
+
 ## Apache2 server
 Install Apache2 by running:
 ```
@@ -19,17 +20,13 @@ sudo apt install apache2c
 ```
 You can test the installed server by typing in the IP address of the host VM in a web browser.
 
-The hard part is to enable https with Apache at Ubuntu. Otherwise, the setup looks straightforward.
-
-1. Enable https on Apache web server of Ubuntu. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/). The following video shows an example.
-   - Here is an example https configuration file [my-server.conf](web/my-server.conf)
-   - Do NOT protect the private key of the web server with a password since the web server will not be able to start with user interaction
+The hard part is to enable https with Apache at Ubuntu. Enable https on Apache web server of Ubuntu. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/). The following video shows an example.
+- Here is an example https configuration file [my-server.conf](web/my-server.conf)
+- Do NOT protect the private key of the web server with a password since the web server will not be able to start with user interaction
 
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
-2. Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu.
-   - The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
-
+Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu. The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
 
 
 ## PHP
@@ -41,7 +38,7 @@ Restart Apache2 server
 ```
 sudo systemctl restart apache2.service
 ```
-Put your PHP script (e.g., test_get.php) under path /var/www/html. You can test the server by visiting the following link in a browser: http://<local IP>/test_get.php
+Put your PHP script (e.g., test_get.php) under path */var/www/html*. You can test the server by visiting the following link in a browser: *http://\<local IP>/test_get.php*
 
 ## mitmproxy
 Download mitmproxy
