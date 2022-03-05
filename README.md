@@ -139,7 +139,7 @@ You will see the responses from the server are modified.
     
 # MITM against HTTPS
 
-mitmproxy is able to decrypt encrypted traffic on the fly (more information can be found here). There are two methods to enable such function :
+mitmproxy is able to [decrypt encrypted traffic on the fly](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/). There are two methods to enable such function:
 - Install mitmproxy’s CA on the client device.
 - Use the self-signed server certificate as mitmproxy’s CA.  
 Since our client ESP32 does not have functions for installing trusted CA, we use the second method.
