@@ -177,7 +177,7 @@ def request(flow: http.HTTPFlow) -> None:
 
 Run the script using command:
 ```
-mitmdump –s <script_path>
+mitmdump -s /home/iot/Documents/http-query.py
 ```   
 You will see the responses from the server are modified.
 
