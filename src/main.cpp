@@ -4,28 +4,32 @@
 // Unified Sensor Library Example
 // Written by Tony DiCola for Adafruit Industries
 // Released under an MIT license.
+
 // REQUIRES the following Arduino libraries:
 // - DHT Sensor Library: https://github.com/adafruit/DHT-sensor-library
 // - Adafruit Unified Sensor Lib: https://github.com/adafruit/Adafruit_Sensor
+
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include <DHT_U.h>
-
 // Load Wi-Fi library
 #include <WiFi.h>
-
-// Load http and https client library
 #include <HTTPClient.h>
 
 // Replace with your network credentials
-const char* ssid = "SSID";
-const char* password = "PASSWORD";
+const char* ssid = "CWS5Q";
+const char* password = "LN7S3S282Q7NLCD8";
 
-#define FU_HTTPS // Use https client
-// #define FU_HTTP // Use http client
+#define FU_HTTPS
 
 //Your Domain name with URL path or IP address with path
+#ifdef FU_HTTP
+String serverName = "http://192.168.1.7/test_get.php";
+#endif
+
+#ifdef FU_HTTPS
 String serverName = "https://192.168.1.7/test_get.php";
+#endif
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
@@ -34,6 +38,7 @@ unsigned long lastTime = 0;
 //unsigned long timerDelay = 600000;
 // Set timer to 5 seconds (5000)
 unsigned long timerDelay = 5000;
+
 
 #define DHTPIN 22     // Digital pin connected to the DHT sensor 
 // Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
@@ -49,30 +54,30 @@ unsigned long timerDelay = 5000;
 
 DHT_Unified dht(DHTPIN, DHTTYPE);
 
-// Replace the following ca certificate with your server's certificate
 #ifdef FU_HTTPS
 const char* root_ca= \
 "-----BEGIN CERTIFICATE-----\n" \
-"MIIDmzCCAoMCFEGekyA+W02NLVwtBzTiy6kLbrFHMA0GCSqGSIb3DQEBCwUAMIGJ\n" \
-"MQswCQYDVQQGEwJVUzEWMBQGA1UECAwNTWFzc2FjaHVzZXR0czEPMA0GA1UEBwwG\n" \
-"TG93ZWxsMQwwCgYDVQQKDANVTUwxCzAJBgNVBAsMAkNTMRQwEgYDVQQDDAsxOTIu\n" \
-"MTY4LjEuNzEgMB4GCSqGSIb3DQEJARYReGlud2VuX2Z1QHVtbC5lZHUwHhcNMjIw\n" \
-"MjI3MDIyNTA5WhcNMjMwMjI3MDIyNTA5WjCBiTELMAkGA1UEBhMCVVMxFjAUBgNV\n" \
-"BAgMDU1hc3NhY2h1c2V0dHMxDzANBgNVBAcMBkxvd2VsbDEMMAoGA1UECgwDVU1M\n" \
-"MQswCQYDVQQLDAJDUzEUMBIGA1UEAwwLMTkyLjE2OC4xLjcxIDAeBgkqhkiG9w0B\n" \
-"CQEWEXhpbndlbl9mdUB1bWwuZWR1MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\n" \
-"CgKCAQEAuOhoDm1+zc6XnyhWayfpRkxTbsSqML7OE1NkzCG1WeX686WYKEoPyObG\n" \
-"vLBPFO7X2iu3m/pWP/mruWO5+7yTFIPi/2nDRbEngbHadl/4YiABTHfw9FuHkLWL\n" \
-"1Et8h/yl1qo0waNHGFluBdsFu09rRCDZbi0o8Pkt+AsoFZSOg0zOxp7/OHs6muPP\n" \
-"+LlCMxHvgY8sh6l3wjDRd/YCJceLRB+hhBdn6rPpXK5/00jNrT8r928I9fOUVR+h\n" \
-"yDHluG8AMP/iTsi2UoTp1j9gD0WCEqwnVtzXGeeak8ef3yQ3jSwvxXMNK4qoba9W\n" \
-"YHyhAJ/v2OjCJP0CCDxEbEJj2n7dQQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQAY\n" \
-"qGFBk4kpUJc49en/bsMBpHZHS8zVPThj8NyZ1OEtN4uLGmNdj1XERn2JE8CDtPyn\n" \
-"6Dqpy+TOJl78niYI5zreUYkBhEJfsZmr2OQXc8FP9ht3emQAqTyuxzDgb+BkQMzA\n" \
-"etAqJ1t3SQqOqVJ+6nPA06nXNgmgfsSW8XDYnxmp3bDsTiY9G2qPwO6TEhYoI5Tj\n" \
-"MzUTQh5M10gPKJHL5qlvpuEkSvh5OIjsIlftgY9bVFxqWvMLZyHwZTOHYE4QJ5PR\n" \
-"mdfcQAjZPxe0ItQiiSsrOIVqiKEKZW6/IMb28bqBLRiHsw3eKvho2gF7oR1QsB3N\n" \
-"Tgx2ehqfvmu2dxJ/+FWr\n" \
+"MIID3TCCAsWgAwIBAgIUMPGWkElQF+85oOxgDJ/hvse44CkwDQYJKoZIhvcNAQEL\n" \
+"BQAwfjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAk1BMQ8wDQYDVQQHDAZMb3dlbGwx\n" \
+"DDAKBgNVBAoMA1VNTDELMAkGA1UECwwCQ1MxFDASBgNVBAMMCzE5Mi4xNjguMS43\n" \
+"MSAwHgYJKoZIhvcNAQkBFhF4aW53ZW5fZnVAdW1sLmVkdTAeFw0yMjAyMjcwNTU4\n" \
+"MjdaFw0yMzAyMjcwNTU4MjdaMH4xCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJNQTEP\n" \
+"MA0GA1UEBwwGTG93ZWxsMQwwCgYDVQQKDANVTUwxCzAJBgNVBAsMAkNTMRQwEgYD\n" \
+"VQQDDAsxOTIuMTY4LjEuNzEgMB4GCSqGSIb3DQEJARYReGlud2VuX2Z1QHVtbC5l\n" \
+"ZHUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDyvCLMXves9I+D6rOa\n" \
+"7Fc6tydf1SwMnQU9f2Iwsd2G/NallJ0TdFkIXZJjHcNleE87DldYvhX/jn/dtLLh\n" \
+"Np9SY9Mr9M/vHNewJYBREYNgVcTghyf5BTGLTpnatLER6/Q8hEsY377fNlpeR2Um\n" \
+"v92go0YgZJ8Vgg/P8OA6tNevI9BTkXSI5MkLlmbcLm0wy1ryUwOvLb7uJ50jq02z\n" \
+"1c1EhyoLMgD7iNHi9LiW3hr4VVIxJ6hoyllo9FMqo4CUInjecBTCQByKT3sR8KWh\n" \
+"Q67yG0ZlFaBDEwufUT0ny+gJaWe6GmeKuqDldt7rYbQD/Pi7Yg0U4qYoT7ry4MiB\n" \
+"7M/9AgMBAAGjUzBRMB0GA1UdDgQWBBTlUha/ZZDKTO478xxQD8Jyq3SznTAfBgNV\n" \
+"HSMEGDAWgBTlUha/ZZDKTO478xxQD8Jyq3SznTAPBgNVHRMBAf8EBTADAQH/MA0G\n" \
+"CSqGSIb3DQEBCwUAA4IBAQAWGPnAbx+1qNLBszlVF5eX2VbrfLb7doKpWPKB/fG3\n" \
+"icXo7ry2+b4+TgSG7T3hIFy9Vfmr9Y9dYpsxL/6kKg5C8xKo9VhfwNipyBe+jsIM\n" \
+"ytH52lcNoNFaIxbg8IaqP47ZgsTFpiX7Ni59CgAw/ZkIG3zEZdXCixSlfA7j0Vny\n" \
+"tGqHD65flS7cY9O3jPbberboMAcMz9XQl2H3qRgqP7KlriV2oOvy4Av4PkU3ZWTp\n" \
+"RJ4/GVBPki5+3hgw7aRbsETFr0aAsYp+5o6fzRhXOoPQHIfZke0DTbL/LkPELg0w\n" \
+"AE0H8i/pbfhL0FPwvgsYZ+6nBGjs/hmmU5UCDWyGwayG\n" \
 "-----END CERTIFICATE-----\n";
 #endif
 
@@ -128,11 +133,11 @@ void loop() {
 
       String serverPath = serverName + "?Temperature="+myTemperatureString+"&Humidity="+myHumidityString;
      
-      // Your Domain name with URL path or IP address with path
       #ifdef FU_HTTP
       http.begin(serverPath.c_str());
       #endif
 
+      // Your Domain name with URL path or IP address with path
       #ifdef FU_HTTPS
       http.begin(serverPath.c_str(), root_ca);
       #endif
@@ -147,7 +152,7 @@ void loop() {
         Serial.println(payload);
       }
       else {
-        Serial.print("Error code: ");
+        Serial.print("httpResponseCode (Error) code: ");
         Serial.println(httpResponseCode);
       }
       // Free resources
