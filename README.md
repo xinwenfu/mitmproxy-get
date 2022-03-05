@@ -106,7 +106,7 @@ mitmproxy can be stopped by press *Ctrl+c*, then press *y*.
 
 ## Monitor HTTP flows
 Let’s test if mitmproxy can monitor HTTP flows.
-Run the http version of the firmware on ESP32.
+Run the http version of the firmware on ESP32 and observe the http requests in mitmproxy.
 
 ![image](https://user-images.githubusercontent.com/69218457/156868428-a9f0f869-2e35-40e3-afdb-652006ec86c6.png)    
     
