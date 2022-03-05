@@ -14,7 +14,7 @@ This project requires the ES32 board, the installation of adafruit/DHT sensor li
 
 ## Apache2 server
 
-### Install Apache2
+1. Install Apache2
 ```
 sudo apt update
 sudo apt install apache2
@@ -23,7 +23,9 @@ You can test the installed server by typing in the IP address of the host VM in 
 ![image](https://user-images.githubusercontent.com/69218457/156863561-96d0e26f-c1bf-4c27-aa16-26b0ba8c8a1a.png)
 
 
-The hard part is to enable https with Apache at Ubuntu. Enable https on Apache web server of Ubuntu. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/). The following video shows an example.
+2. Enable https on Apache web server of Ubuntu. 
+
+The hard part is to enable https with Apache at Ubuntu. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/). The following video shows an example.
 - Here is an example https configuration file [my-server.conf](web/my-server.conf)
 - Do NOT protect the private key of the web server with a password since the web server will not be able to start with user interaction
 
