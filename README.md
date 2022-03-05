@@ -135,9 +135,7 @@ mitmdump -s /home/iot/Documents/http-query.py
 ```   
 You will see the responses from the server are modified.
 
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814128-5dfd1fc2-5cc5-4bfa-b478-2817c04e1401.png">
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814169-664bedc2-7b6a-4d8c-93bb-fa7a7ea18c52.png">
-
+![image](https://user-images.githubusercontent.com/69218457/156868594-cce94736-2fcf-4a31-9082-d281a861fd01.png)
     
 # MITM against HTTPS
 
