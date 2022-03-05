@@ -109,10 +109,8 @@ Let’s test if mitmproxy can monitor HTTP flows.
 Open a web browser from a separate machine (e.g., your host computer). Don’t use the VM which runs mitmproxy because the [PREROUTING](https://serverfault.com/a/977515) table only redirects traffic from outside. 
 Visit http://\<host ip>/test_get.php?Temperature=21&Humidity=20 and you will see the traffic in the mitmproxy console.
 
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813138-732c53b1-12d3-4bb5-a2b2-c7bec05b34c4.png">
+![image](https://user-images.githubusercontent.com/69218457/156868428-a9f0f869-2e35-40e3-afdb-652006ec86c6.png)    
     
-    
-
 ## Intercept and modify HTTP traffic (script) 
 
 We use *mitmdump* with python script to modify HTTP traffic sent from ESP32 automatically.
