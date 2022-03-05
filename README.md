@@ -196,9 +196,10 @@ sudo cat [private key] [self-signed crt] > mitmCA
 Now we can run mitmproxy or mitmdump with two options: 
 - --certs *=/home/iot/mitmproxy/mitmCA.pem: configure the self-signed cert
 - --ssl-insecure: do not verify server certs
-   
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814329-847ef12d-0495-45f5-b832-7a39d7c30f92.png">
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814363-521ea263-546d-423f-9ecf-035172f04377.png">
+```
+mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
+```
+![image](https://user-images.githubusercontent.com/69218457/156868252-acadefc5-4201-490c-b736-82787fb9cb4c.png)
 
 
 # Notes
