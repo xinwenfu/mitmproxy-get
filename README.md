@@ -166,15 +166,18 @@ mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query
 ![image](https://user-images.githubusercontent.com/69218457/156868252-acadefc5-4201-490c-b736-82787fb9cb4c.png)
 
 
-# Notes
+# Reset iptables
 
-## Reset iptables
+After the tasks are done, iptables shall be reset. Otherwise, things may be messed up.
 
-Remember to reset redirected ports before you test ESP32 without mitmproxy involved, otherwise ESP32 will failed to connect the server. The recovery can be done by restarting the VM, or by running commands: 
+Reset iptables by restarting the VM, or by running commands. 
 ```
 sudo iptables -t nat -F
 sudo sysctl -w net.ipv4.ip_forward=0
 ```
+
+# Notes
+
 
 ## Intercept and modify HTTP traffic (manually)
 
