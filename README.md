@@ -118,8 +118,8 @@ Stop mitmproxy. Mitmproxy can be stopped by press *Ctrl+c*, then press *y*.
 We now use *mitmdump* with python script to modify HTTP traffic sent from ESP32 automatically.
 Setup ESP32 and make sure that you can see responses from the server in the VS code console.
 
-Now let’s create the python script in the VM. Example scripts can be found [here](https://docs.mitmproxy.org/stable/addons-examples/).
-Create a .py file (http-query.py in the example). Copy the following code to this file and save it. Remember to replace <host_ip> with your VM’s ip.
+Now let’s create the [python script](https://docs.mitmproxy.org/stable/addons-examples/) in the VM. 
+Create a .py file ([http-query.py](mitmproxy/http-query.py) in the example). Copy the following code to this file and save it. Remember to replace <host_ip> with your VM’s ip.
 ```
 """Modify HTTP query parameters."""
 from mitmproxy import http
