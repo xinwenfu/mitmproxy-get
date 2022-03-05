@@ -112,43 +112,6 @@ Visit http://\<host ip>/test_get.php?Temperature=21&Humidity=20 and you will see
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156813138-732c53b1-12d3-4bb5-a2b2-c7bec05b34c4.png">
     
     
-## Intercept and modify HTTP traffic (manually)
-
-To intercept requests with specific URLs, you need to enable the interception function and using specific filter expressions.
-
-To enable the interception function, press **i**. You will see shown at the bottom of the console.
-```
-set intercept ''
-```
-
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813305-2802e23d-1f0c-44ea-9ad0-75ab46a29d55.png">
-    
-    
-We use filter expressions *~u \<regex>* to only intercept specific URLs and *~q* to only intercept requests. *&* is used to connect two expressions. More filter expressions can be found [here](https://docs.mitmproxy.org/stable/concepts-filters/).
-
-Type in *~u /test_get.php & ~q*, then press **ENTER**.
-
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813514-106b113d-94c9-45da-9713-1de7bba0d2b2.png">
-
-Now let’s visit the same url again. This time, you will find your browser keeps loading. This is because the HTTP request is intercepted by mitmproxy. The intercepted requested is indicated with red text in the mitmproxy console.
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813624-1a20d41f-b619-409c-814a-7238449cb019.png">
-
-To modify the intercepted connection, put the focus (>>) on that flow using arrow keys and then press **ENTER** to open the details view.
-Press *e* to edit the flow. Select a query by using arrow keys and press **ENTER**.
-
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813678-2b7f172b-4078-414c-9ed1-adc77d2aa1b3.png">
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813768-9589f8ae-c5a3-4fce-ab3b-536c2d95fbfa.png">    
-    
-Mitmproxy shows all query key and value pairs for editing.
-Select the value that you want to modify, and press ENTER to edit it.
-After finishing editing a value, press ESC to confirm it.
-
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813838-a72a6a8f-6ef1-4a8b-a803-b967b4b694aa.png">
-    
-Press *q* to quit editing mode.
-Press *a* to resume the intercepted flow. You will find the changed values shown in your browser.
-
-To stop mitmproxy, Press *Ctrl+c*, then press *y*.
 
 ## Intercept and modify HTTP traffic (script) 
 
@@ -212,3 +175,42 @@ Remember to reset redirected ports before you test ESP32 without mitmproxy invol
 sudo iptables -t nat -F
 sudo sysctl -w net.ipv4.ip_forward=0
 ```
+
+## Intercept and modify HTTP traffic (manually)
+
+To intercept requests with specific URLs, you need to enable the interception function and using specific filter expressions.
+
+To enable the interception function, press **i**. You will see shown at the bottom of the console.
+```
+set intercept ''
+```
+
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813305-2802e23d-1f0c-44ea-9ad0-75ab46a29d55.png">
+    
+    
+We use filter expressions *~u \<regex>* to only intercept specific URLs and *~q* to only intercept requests. *&* is used to connect two expressions. More filter expressions can be found [here](https://docs.mitmproxy.org/stable/concepts-filters/).
+
+Type in *~u /test_get.php & ~q*, then press **ENTER**.
+
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813514-106b113d-94c9-45da-9713-1de7bba0d2b2.png">
+
+Now let’s visit the same url again. This time, you will find your browser keeps loading. This is because the HTTP request is intercepted by mitmproxy. The intercepted requested is indicated with red text in the mitmproxy console.
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813624-1a20d41f-b619-409c-814a-7238449cb019.png">
+
+To modify the intercepted connection, put the focus (>>) on that flow using arrow keys and then press **ENTER** to open the details view.
+Press *e* to edit the flow. Select a query by using arrow keys and press **ENTER**.
+
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813678-2b7f172b-4078-414c-9ed1-adc77d2aa1b3.png">
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813768-9589f8ae-c5a3-4fce-ab3b-536c2d95fbfa.png">    
+    
+Mitmproxy shows all query key and value pairs for editing.
+Select the value that you want to modify, and press ENTER to edit it.
+After finishing editing a value, press ESC to confirm it.
+
+<img alt="image" src="https://user-images.githubusercontent.com/69218457/156813838-a72a6a8f-6ef1-4a8b-a803-b967b4b694aa.png">
+    
+Press *q* to quit editing mode.
+Press *a* to resume the intercepted flow. You will find the changed values shown in your browser.
+
+To stop mitmproxy, Press *Ctrl+c*, then press *y*.
+
