@@ -15,6 +15,8 @@ This project requires the ES32 board, the installation of adafruit/DHT sensor li
 ## Apache2 server
 
 1. Install Apache2
+
+Type the following commands in a terminal at Ubuntu VM.
 ```
 sudo apt update
 sudo apt install apache2
