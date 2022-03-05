@@ -14,9 +14,7 @@ This project requires the ES32 board, the installation of adafruit/DHT sensor li
 
 # Software setup
 
-## Apache2 server
-
-1. Install Apache2
+## Install Apache2
 
 Type the following commands in a terminal at Ubuntu VM.
 ```
@@ -27,7 +25,7 @@ You can test the installed server by typing in the IP address of the host VM in 
 ![image](https://user-images.githubusercontent.com/69218457/156863561-96d0e26f-c1bf-4c27-aa16-26b0ba8c8a1a.png)
 
 
-2. Enable https on Apache web server of Ubuntu. 
+## Enable https on Apache web server 
 
 The hard part is to enable https with Apache at Ubuntu. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/). 
 The following video shows an example.
@@ -47,10 +45,10 @@ sudo a2ensite my-server.conf
 sudo systemctl restart apache2
 ```
 
-### PHP script for processing http get request
+## Copy PHP script to web folder
 Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu. The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
 
-## PHP
+## Install PHP
 Install PHP and Apache PHP module by running the following commands
 ```
 sudo apt install php libapache2-mod-php
@@ -61,14 +59,18 @@ sudo systemctl restart apache2.service
 ```
 Put your PHP script (e.g., test_get.php) under path */var/www/html*. You can test the server by visiting the following link in a browser: *http://\<local IP>/test_get.php*
 
-## mitmproxy
+## Install mitmproxy
 Download mitmproxy
 ```
 sudo apt install mitmproxy
 ```
 
-## ESP32 firmware
+## Clone this project
 Download this project to Ubuntu VM, start VS code and use *File*->*Open Folder...* to load the project.
+```
+cd ~/Documents
+git clone
+```
 
 The code supports both http and https conenctions through a macro definition in the code. 
 Make sure the code has the correct macro defintion 
