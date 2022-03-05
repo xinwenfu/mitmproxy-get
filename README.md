@@ -35,9 +35,14 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 ```
 
 - Edit the configuration file. Here is an example https configuration file [my-server.conf](web/my-server.conf)
-
+- Enable the https server and restart apache2 to start both http and https servers
+```
+sudo a2ensite my-server.conf
+sudo systemctl restart apache2
+```
 
 The following video shows an example.
+
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
 ### PHP script for processing http get request
