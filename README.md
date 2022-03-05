@@ -69,7 +69,7 @@ sudo apt install mitmproxy
 Download this project to Ubuntu VM, start VS code and use *File*->*Open Folder...* to load the project.
 ```
 cd ~/Documents
-git clone
+git clone https://github.com/xinwenfu/mitmproxy-get.git
 ```
 
 The code supports both http and https conenctions through a macro definition in the code. 
