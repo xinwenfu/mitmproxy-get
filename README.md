@@ -32,18 +32,18 @@ The following video shows an example.
 
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
-- The following command creates the https web server's private key (/etc/ssl/private/my-server.key) and self-signed SSL certificate (/etc/ssl/certs/my-server.crt). We do NOT protect the private key of the web server with a password since the web server will not be able to start without user interaction inputting the password.
+- The following command creates the https web server's private key (/etc/ssl/private/my-server.key) and self-signed SSL certificate (/etc/ssl/certs/my-server.crt). We do NOT protect the private key of the web server with a password since the web server will not be able to start without user interaction inputting the password. While running this command, the *common name* of the web server must be the IP address of the Ubuntu VM what hosts the web server.
 ```
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/my-server.key -out /etc/ssl/certs/my-server.crt
 ```
 
-- Edit the configuration file. Here is an example https configuration file [my-server.conf](web/my-server.conf)
-- Enable the https server and restart apache2 to start both http and https servers
+- Edit the configuration file. Here is an example https configuration file [my-server.conf](web/my-server.conf). Copy the example my-server.conf to /etc/apache2/sites-available/ using the sudo command if needed. 
+
+- Enable the https server and restart apache2 to start both http and https servers. It appears we shall not use the full path of my-server.conf with a2ensite. The following command is just fine.
 ```
 sudo a2ensite my-server.conf
 sudo systemctl restart apache2
 ```
-
 
 ### PHP script for processing http get request
 Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu. The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
@@ -118,7 +118,7 @@ To intercept requests with specific URLs, you need to enable the interception fu
 
 To enable the interception function, press **i**. You will see shown at the bottom of the console.
 ```
-set intercept ``
+set intercept ''
 ```
 
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156813305-2802e23d-1f0c-44ea-9ad0-75ab46a29d55.png">
