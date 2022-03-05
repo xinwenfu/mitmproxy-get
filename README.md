@@ -7,12 +7,12 @@ Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS,
 
 We will learn using mitmproxy to modify HTTP/HTTPS query manually, and how to use mitmdump with python script to modify HTTP/HTTPS query automatically.
 
-# Hardware setup
+# 1. Hardware setup
 This project requires the ES32 board, the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware of the ESP32 sends DHT11/DHT22 data to a web server at a Ubuntu VM. The IP address of the web server is hard-coded into the formware code. 
 
 <img src="imgs/mitm-labsetup.jpg">
 
-# Software setup
+# 2. Software setup
 
 ## Install Apache2
 
@@ -83,7 +83,7 @@ Enable *FU_HTTP* definition as follows to connects to the http server.
 #define FU_HTTP
 ```
    
-# Set up iptables intercepting http traffic
+# 3. Set up iptables intercepting http traffic
 mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, their ports 80 and 443 should be redirected to the port mitmproxy listens on. Note: These chages will be recovered after next restart.
 
 Enable IP forwarding
@@ -97,7 +97,7 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 ```
 
-# MITM against HTTP
+# 4. MITM against HTTP
 
 ## Start up mitmproxy
 To start up mitmproxy with the console interface, open a command terminal in the directory of mitmproxy and type in
@@ -140,7 +140,7 @@ You will see the responses from the server are modified.
 
 ![image](https://user-images.githubusercontent.com/69218457/156868594-cce94736-2fcf-4a31-9082-d281a861fd01.png)
     
-# MITM against HTTPS
+# 5. MITM against HTTPS
 
 mitmproxy is able to [decrypt encrypted traffic on the fly](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/). There are two methods to enable such function and we use the second method as a demo.
 - Install mitmproxy’s CA on the client device.
