@@ -168,7 +168,7 @@ mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query
 
 # Reset iptables
 
-After the tasks are done, iptables shall be reset. Otherwise, things may be messed up.
+After the tasks are done, iptables shall be reset. Otherwise, normal web browsing may be messed up.
 
 Reset iptables by restarting the VM, or by running commands. 
 ```
