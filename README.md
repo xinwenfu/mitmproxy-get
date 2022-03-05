@@ -20,6 +20,8 @@ sudo apt update
 sudo apt install apache2
 ```
 You can test the installed server by typing in the IP address of the host VM in a web browser.
+![image](https://user-images.githubusercontent.com/69218457/156863561-96d0e26f-c1bf-4c27-aa16-26b0ba8c8a1a.png)
+
 
 The hard part is to enable https with Apache at Ubuntu. Enable https on Apache web server of Ubuntu. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/). The following video shows an example.
 - Here is an example https configuration file [my-server.conf](web/my-server.conf)
