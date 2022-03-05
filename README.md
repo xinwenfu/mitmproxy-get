@@ -188,7 +188,7 @@ Since our client ESP32 does not have functions for installing trusted CA, we use
    
 We first generate the required PEM format file by running command:
 ```
-sudo cat [self-signed key] [self-signed crt] > mitmCA
+sudo cat [private key] [self-signed crt] > mitmCA
 ```
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156814275-a5902383-fd6d-4bb1-ab1a-f857fa2bad08.png">
 
