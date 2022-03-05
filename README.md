@@ -79,7 +79,7 @@ Enable *FU_HTTP* definition as follows to connects to the http server.
 #define FU_HTTP
 ```
    
-# MITMPROXY intercepting http traffic
+# Set up iptables intercepting http traffic
 mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, their ports 80 and 443 should be redirected to the port mitmproxy listens on. Note: These chages will be recovered after next restart.
 
 Enable IP forwarding
@@ -93,16 +93,14 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 ```
 
-# Start up mitmproxy
+# MITM against HTTP
+
+## Start up mitmproxy
 To start up mitmproxy with the console interface, open a command terminal in the directory of mitmproxy and type in
 ```
 mitmproxy
 ```
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156812912-bef0527f-cade-4f3b-a5c9-9dec48b77a76.png">
-
 mitmproxy can be stopped by press *Ctrl+c*, then press *y*.
-
-# MITM against HTTP
 
 ## Monitor HTTP flows
 Let’s test if mitmproxy can monitor HTTP flows.
@@ -112,7 +110,9 @@ Run the http version of the firmware on ESP32 and observe the http requests in m
     
 ## Intercept and modify HTTP traffic (script) 
 
-We use *mitmdump* with python script to modify HTTP traffic sent from ESP32 automatically.
+Stop mitmproxy.
+
+We now use *mitmdump* with python script to modify HTTP traffic sent from ESP32 automatically.
 Setup ESP32 and make sure that you can see responses from the server in the VS code console.
 
 Now let’s create the python script in the VM. Example scripts can be found [here](https://docs.mitmproxy.org/stable/addons-examples/).
