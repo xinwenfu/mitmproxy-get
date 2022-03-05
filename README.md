@@ -149,12 +149,18 @@ We first generate the required PEM format file by running command:
 cd ~/Documents
 sudo cat /etc/ssl/private/my-server.key /etc/ssl/certs/my-server.crt > mitmCA.pem
 ```
-<img alt="image" src="https://user-images.githubusercontent.com/69218457/156814275-a5902383-fd6d-4bb1-ab1a-f857fa2bad08.png">
-
     
 Now we can run mitmproxy or mitmdump with two options: 
 - --certs *=/home/iot/mitmproxy/mitmCA.pem: configure the self-signed cert
 - --ssl-insecure: do not verify server certs
+
+```
+mitmproxy --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure
+```
+![image](https://user-images.githubusercontent.com/69218457/156868802-d30c23a1-228e-4bcb-acf5-cf2bb56e9474.png)
+
+
+
 ```
 mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
 ```
