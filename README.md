@@ -10,6 +10,8 @@ We will learn using mitmproxy to modify HTTP/HTTPS query manually, and how to us
 # Hardware setup
 This project requires the ES32 board, the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware of the ESP32 sends DHT11/DHT22 data to a web server at a Ubuntu VM. The IP address of the web server is hard-coded into the formware code. 
 
+<img src="imgs/mitm-labsetup.jpg">
+
 # Software setup
 
 ## Apache2 server
