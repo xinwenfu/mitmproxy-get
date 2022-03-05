@@ -155,12 +155,6 @@ To stop mitmproxy, Press *Ctrl+c*, then press *y*.
 We use *mitmdump* with python script to modify HTTP traffic sent from ESP32 automatically.
 Setup ESP32 and make sure that you can see responses from the server in the VS code console.
 
-Remember to reset redirected ports before you test ESP32 without mitmproxy involved, otherwise ESP32 will failed to connect the server. The recovery can be done by restarting the VM, or by running commands: 
-```
-sudo iptables -t nat -F
-sudo sysctl -w net.ipv4.ip_forward=0
-```
-
 Now let’s create the python script in the VM. Example scripts can be found [here](https://docs.mitmproxy.org/stable/addons-examples/).
 Create a .py file (http-query.py in the example). Copy the following code to this file and save it. Remember to replace <host_ip> with your VM’s ip.
 ```
@@ -205,3 +199,14 @@ Now we can run mitmproxy or mitmdump with two options:
    
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156814329-847ef12d-0495-45f5-b832-7a39d7c30f92.png">
 <img alt="image" src="https://user-images.githubusercontent.com/69218457/156814363-521ea263-546d-423f-9ecf-035172f04377.png">
+
+
+# Notes
+
+## Reset iptables
+
+Remember to reset redirected ports before you test ESP32 without mitmproxy involved, otherwise ESP32 will failed to connect the server. The recovery can be done by restarting the VM, or by running commands: 
+```
+sudo iptables -t nat -F
+sudo sysctl -w net.ipv4.ip_forward=0
+```
