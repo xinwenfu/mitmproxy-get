@@ -153,13 +153,14 @@ Now we can run mitmproxy or mitmdump with two options:
 - --certs *=/home/iot/mitmproxy/mitmCA.pem: configure the self-signed cert
 - --ssl-insecure: do not verify server certs
 
+Run mitmproxy to observe decrypted https requests
 ```
 mitmproxy --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure
 ```
 ![image](https://user-images.githubusercontent.com/69218457/156868802-d30c23a1-228e-4bcb-acf5-cf2bb56e9474.png)
 
 
-
+Run mitmdump to change the https requests
 ```
 mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
 ```
