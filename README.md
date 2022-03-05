@@ -106,8 +106,7 @@ mitmproxy can be stopped by press *Ctrl+c*, then press *y*.
 
 ## Monitor HTTP flows
 Let’s test if mitmproxy can monitor HTTP flows.
-Open a web browser from a separate machine (e.g., your host computer). Don’t use the VM which runs mitmproxy because the [PREROUTING](https://serverfault.com/a/977515) table only redirects traffic from outside. 
-Visit http://\<host ip>/test_get.php?Temperature=21&Humidity=20 and you will see the traffic in the mitmproxy console.
+Run the http version of the firmware on ESP32.
 
 ![image](https://user-images.githubusercontent.com/69218457/156868428-a9f0f869-2e35-40e3-afdb-652006ec86c6.png)    
     
