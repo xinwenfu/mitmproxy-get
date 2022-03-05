@@ -1,6 +1,6 @@
 # MITM attacks against http and https through mitmproxy
 
-Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS, Websocket, and generic TCP flows. mitmproxy tools contain three front-end tools, which work with the same core proxy. 
+Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS, Websocket, and generic TCP flows. Mitmproxy tools contain three front-end tools, which work with the same core proxy. 
 - mitmproxy: an interactive, SSL/TLS-capable intercepting proxy with a console interface.
 - mitmweb: a web-based interface for mitmproxy.
 - mitmdump: the command-line version of mitmproxy.
