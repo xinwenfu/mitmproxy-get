@@ -23,13 +23,14 @@ const char* password = "mypassword";
 #define FU_HTTP
 // #define FU_HTTPS
 
-//Your Domain name with URL path or IP address with path
+//Change ubuntu-vm-ip below to your Ubuntu VM IP
 #ifdef FU_HTTP
-String serverName = "http://192.168.1.7/test_get.php";
+String serverName = "http://ubuntu-vm-ip/test_get.php";
 #endif
 
+//Change ubuntu-vm-ip below to your Ubuntu VM IP
 #ifdef FU_HTTPS
-String serverName = "https://192.168.1.7/test_get.php";
+String serverName = "https://ubuntu-vm-ip/test_get.php";
 #endif
 
 // the following variables are unsigned longs because the time, measured in
@@ -55,6 +56,7 @@ unsigned long timerDelay = 5000;
 
 DHT_Unified dht(DHTPIN, DHTTYPE);
 
+//Change root_ca to your web server's certificate
 #ifdef FU_HTTPS
 const char* root_ca= \
 "-----BEGIN CERTIFICATE-----\n" \
