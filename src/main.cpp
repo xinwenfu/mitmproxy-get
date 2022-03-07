@@ -20,7 +20,8 @@
 const char* ssid = "CWS5Q";
 const char* password = "LN7S3S282Q7NLCD8";
 
-#define FU_HTTPS
+#define FU_HTTP
+// #define FU_HTTPS
 
 //Your Domain name with URL path or IP address with path
 #ifdef FU_HTTP
