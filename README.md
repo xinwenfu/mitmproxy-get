@@ -75,14 +75,17 @@ git clone https://github.com/xinwenfu/mitmproxy-get.git
 
 The code supports both http and https conenctions through a macro definition in the code. 
 Make sure the code has the correct macro defintion 
-Enable *FU_HTTPS* definition as follows to connects to the https server.
-```
-#define FU_HTTPS
-```
-Enable *FU_HTTP* definition as follows to connects to the http server.
+
+Enable *FU_HTTP* definition as follows to connect to the http server.
 ```
 #define FU_HTTP
 ```
+
+Enable *FU_HTTPS* definition as follows to connect to the https server.
+```
+#define FU_HTTPS
+```
+
    
 # 3. Set up iptables intercepting http traffic
 mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, their ports 80 and 443 should be redirected to the port mitmproxy listens on. Note: These chages will be recovered after next restart.
