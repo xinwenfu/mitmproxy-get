@@ -182,7 +182,7 @@ sudo sysctl -w net.ipv4.ip_forward=0
 
 # Notes
 
-## Disable virtual host entry
+## Disable apache2 virtual host entry
 
 The following [commands](https://itorn.net/disable-remove-virtual-host-website-entry-in-apache/) disable an apache2 virtual host (server) and restart apache2.
 ```
