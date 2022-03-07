@@ -57,7 +57,7 @@ sudo systemctl restart apache2.service
 
 ## Copy PHP script to web folder
 Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu. The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
-You can test the server by visiting the following link in a browser: *http://<host ip>\/test_get.php?Temperature=21&Humidity=20*
+You can test the server by visiting the following link in a browser: *https://<host ip>\/test_get.php?Temperature=21&Humidity=20*
 
 
 ## Install mitmproxy
