@@ -1,7 +1,7 @@
 <html>
 <body>
 <?php
-echo "Temperature: " . $_GET['Temperature'] . "&deg;; Humidity: " . $_GET['Humidity']."%";
+echo "Temperature: " . $_GET['Temperature'] . "&deg;C; Humidity: " . $_GET['Humidity']."%";
 ?>
 </body>
 </html>
