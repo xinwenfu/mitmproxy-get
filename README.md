@@ -101,6 +101,11 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 ```
 
+To check added rulesm use the following command
+```
+sudo iptables -t nat -L
+```
+
 # 4. MITM against HTTP
 
 ## Start up mitmproxy
