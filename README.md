@@ -1,11 +1,11 @@
 # MITM attacks against http and https through mitmproxy
 
-Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS, Websocket, and generic TCP flows. Mitmproxy tools contain three front-end tools, which work with the same core proxy. 
-- mitmproxy: an interactive, SSL/TLS-capable intercepting proxy with a console interface.
-- mitmweb: a web-based interface for mitmproxy.
-- mitmdump: the command-line version of mitmproxy.
+In this project, we will learn using mitmproxy to monitor, and modify HTTP/HTTPS traffic manually, and how to use mitmdump with python script to modify HTTP/HTTPS query automatically. Those tools can be used for real attacks and for the purpose of understanding the communication protocol.
 
-We will learn using mitmproxy to modify HTTP/HTTPS query manually, and how to use mitmdump with python script to modify HTTP/HTTPS query automatically.
+Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS, Websocket, and generic TCP flows. Mitmproxy tools contain three front-end tools, which work with the same core proxy. 
+- *mitmproxy*: an interactive, SSL/TLS-capable intercepting proxy with a console interface.
+- *mitmweb*: a web-based interface for mitmproxy.
+- *mitmdump*: the command-line version of mitmproxy.
 
 # 1. Hardware setup
 This project requires the ES32 board, the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware of the ESP32 sends DHT11/DHT22 data to a web server at a Ubuntu VM. The IP address of the web server is hard-coded into the formware code. 
