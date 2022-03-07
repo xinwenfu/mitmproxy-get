@@ -122,7 +122,7 @@ Run the http version of the firmware on ESP32 and observe the http requests in m
     
 ## Intercept and modify HTTP traffic (script) 
 
-Stop mitmproxy. Mitmproxy can be stopped by press *Ctrl+c*, then press *y*.
+Stop mitmproxy by by pressing *Ctrl+c*, then press *y*.
 
 We now use *mitmdump* with python script to modify HTTP traffic sent from ESP32 automatically.
 Setup ESP32 and make sure that you can see responses from the server in the VS code console.
