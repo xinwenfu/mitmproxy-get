@@ -88,7 +88,7 @@ Enable *FU_HTTPS* definition as follows to connect to the https server.
 
    
 # 3. Set up iptables intercepting http traffic
-mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, their ports 80 and 443 should be redirected to the port mitmproxy listens on. Note: These chages will be recovered after next restart.
+mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, we need to redirect traffic to ports 80 and 443 using the tool [iptables](https://linux.die.net/man/8/iptables) to the port that mitmproxy listens on. Note: These chages will be recovered after next restart.
 
 Enable IP forwarding
 ```
