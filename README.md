@@ -12,7 +12,7 @@ The figure below shows how the man-in-the-middle (MITM) attack works. Basically 
 <img src="imgs/mitm.png">
 
 # 1. Hardware setup
-This project requires the ES32 board, the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware of the ESP32 sends DHT11/DHT22 data to a web server at a Ubuntu VM. The IP address of the web server is hard-coded into the formware code. 
+This project requires the ES32 board, the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware of the ESP32 sends DHT11/DHT22 data to a web server at a Ubuntu VM. The IP address of the web server is hard-coded into the formware code. The ESP32, and Ubuntu VM are connected to the same WiFi router.
 
 <img src="imgs/mitm-labsetup.jpg">
 
