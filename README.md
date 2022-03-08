@@ -195,6 +195,11 @@ sudo sysctl -w net.ipv4.ip_forward=0
 
 # Notes
 
+## Skip image validation
+
+The bootloader of ESP32 can validate the app image before booting it. This feature can be [disabled](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/kconfig.html).
+
+
 ## Disable apache2 virtual host entry
 
 The following [commands](https://itorn.net/disable-remove-virtual-host-website-entry-in-apache/) disable an apache2 virtual host (server) and restart apache2.
