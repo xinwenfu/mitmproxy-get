@@ -156,8 +156,8 @@ You will see the responses from the server are modified.
 # 5. MITM against HTTPS
 
 mitmproxy is able to [decrypt encrypted traffic on the fly](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/). There are two methods to enable such function and we use the second method as a demo.
-- Install mitmproxy’s CA on the client device.
-- Use the self-signed server certificate as mitmproxy’s CA.  
+- Create a private key and self signed certificate for mitmproxy and install mitmproxy’s certificate on the client device, i.e., the ESP32 in our case. This is more realsitic in practice. This method has its own challenge. The attacker needs to embed mitmproxy's certificate into the client device. This often involves quite some reverse engineeering of the client device.
+- Use the web server's private key and self-signed server certificate as mitmproxy. The method is not that realistic. In practice, the attacker often wants to analyze the communication between the device and the server. It is not hard for the attacker to get a client device. For example, they can just purchase one. However, i is hard for the attacker to get the server's private key. This method is easy and weuse it to demonstrate the principle of decrypting HTTPS traffic with mitmproxy.
 
 We first generate the required PEM format file by running command:
 ```
