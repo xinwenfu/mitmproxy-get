@@ -7,18 +7,18 @@ Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS,
 - *mitmweb*: a web-based interface for mitmproxy.
 - *mitmdump*: the command-line version of mitmproxy.
 
-The figure below shows how the man-in-the-middle (MITM) attack works. Basically mitmproxy sits between the ESP32 and web server, and mitmproxy can intercept the http/https traffic. We demonstrate a simplified case: mitmproxy is hosted at the same computer as the web server. In reality, mitmproxy can be hosted at a standlone computer, which can work as the WiFi router, to which the esp32 will connect. In this way, we can intercept esp32 traffic and analyze the communication protocol.
+The figure below shows how the man-in-the-middle (MITM) attack works. Basically mitmproxy sits between the ESP32 and web server, and mitmproxy can intercept the http/https traffic. We demonstrate a simplified case: mitmproxy is hosted at the same computer as the web server. In reality, mitmproxy can be hosted at a standlone computer, which can work as a WiFi router, to which the esp32 will connect. In this way, we can intercept esp32 traffic and analyze the communication protocol.
 
 <img src="imgs/mitm.png">
 
 # 1. Hardware setup
-This project requires the ES32 board, the installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The firmware of the ESP32 sends DHT11/DHT22 data to a web server at a Ubuntu VM. The IP address of the web server is hard-coded into the formware code. The ESP32, and Ubuntu VM are connected to the same WiFi router.
+This project requires a ES32 board, installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The ESP32 sends DHT11/DHT22 data to a web server at a Ubuntu VM. The IP address of the web server is hard-coded into the formware code. The ESP32 and Ubuntu VM are connected to the same WiFi router.
 
 <img src="imgs/mitm-labsetup.jpg">
 
 # 2. Software setup
 
-## Install Apache2
+## Install Apache web server at Ubuntu VM
 
 Type the following commands in a terminal at Ubuntu VM.
 ```
@@ -36,14 +36,15 @@ The following video shows an example.
 
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
-- The following command creates the https web server's private key (/etc/ssl/private/my-server.key) and self-signed SSL certificate (/etc/ssl/certs/my-server.crt). We do NOT protect the private key of the web server with a password since the web server will not be able to start without user interaction inputting the password. While running this command, the *common name* of the web server must be the IP address of the Ubuntu VM what hosts the web server.
+- The following command creates the https web server's private key (/etc/ssl/private/my-server.key) and self-signed SSL certificate (/etc/ssl/certs/my-server.crt). Do NOT protect the private key of the web server with a password since the web server will not be able to start without a user entering the password. While running this command, the *common name* of the web server must be the IP address of the Ubuntu VM what hosts the web server.
 ```
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/my-server.key -out /etc/ssl/certs/my-server.crt
 ```
 
-- Edit the configuration file. Here is an example https configuration file [my-server.conf](web/my-server.conf). Copy the example my-server.conf to /etc/apache2/sites-available/ using the sudo command if needed. 
+- Edit the configuration file that configures a VirtualHost as the https server. With VirtualHosts, user requests can be directed to multiple host names or IP addresses on the same host computer. Each virtual host can offer different content and to act differently.
+Here is an example https configuration file [my-server.conf](web/my-server.conf) in this repository. Copy the example my-server.conf to /etc/apache2/sites-available/ using the sudo command if needed. 
 
-- Enable the https server and restart apache2 to start both http and https servers. It appears we shall not use the full path of my-server.conf with a2ensite. The following command is just fine.
+- Enable the ssl module and https server. Restart apache2 to start both http and https servers. It appears we shall not use the full path of my-server.conf with a2ensite. The following command is just fine.
 ```
 sudo a2enmod ssl
 systemctl restart apache2
@@ -62,8 +63,8 @@ sudo systemctl restart apache2.service
 ```
 
 ## Copy PHP script to web folder
-Copy [test_get.php](web/test_get.php) to /var/www/html at Ubuntu. The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
-You can test the server by visiting the following link in a browser: *https://Ubuntu-VM-IP/test_get.php?Temperature=21&Humidity=20*
+Copy [test_get.php](web/test_get.php) in this repository to /var/www/html at Ubuntu. The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
+We can also test the server by visiting the following link in a browser: *https://Ubuntu-VM-IP/test_get.php?Temperature=21&Humidity=20*, which sends Temperature=21 and Humidity=20 to the web server.
 
 
 ## Install mitmproxy
@@ -80,7 +81,7 @@ git clone https://github.com/xinwenfu/mitmproxy-get.git
 ```
 
 The code supports both http and https conenctions through a macro definition in the code. 
-Make sure the code has the correct macro defintion 
+Make sure the code has the correct macro defintion in different tasks.
 
 Enable *FU_HTTP* definition as follows to connect to the http server.
 ```
@@ -94,20 +95,20 @@ Enable *FU_HTTPS* definition as follows to connect to the https server.
 
    
 # 3. Set up iptables intercepting http traffic
-mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, we need to redirect traffic to ports 80 and 443 using the tool [iptables](https://linux.die.net/man/8/iptables) in Linux to the port that mitmproxy listens on. Note: These chages will be recovered after next restart.
+mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, we need to redirect traffic sent to to ports 80 and 443 using the tool [iptables](https://linux.die.net/man/8/iptables) in Linux to the port that mitmproxy listens on. Note: These chages will be lost after next computer rebooting.
 
 Enable IP forwarding
 ```
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 
-Create an iptables rule set that redirects the desired traffic to mitmproxy
+Create an iptables rule set that redirects desired traffic to mitmproxy
 ```
 sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 ```
 
-To check added rules using the following command
+Check added iptables rules using the following command
 ```
 sudo iptables -t nat -L
 ```
@@ -130,11 +131,11 @@ Run the http version of the firmware on ESP32 and observe the http requests in m
 
 Stop mitmproxy by by pressing *Ctrl+c*, then press *y*.
 
-We now use *mitmdump* with python script to modify HTTP traffic sent from ESP32 automatically.
-Setup ESP32 and make sure that you can see responses from the server in the VS code console.
+We now use *mitmdump* with a python script to modify HTTP traffic sent from ESP32 automatically.
+Setup ESP32 and make sure that you can see responses from the web server in the VS code console.
 
-Now let’s create the [python script](https://docs.mitmproxy.org/stable/addons-examples/) in the VM. 
-Create a .py file ([http-query.py](mitmproxy/http-query.py) in the example). Copy the following code to this file and save it. Remember to replace <host_ip> with your VM’s ip.
+Let’s create the [python script](https://docs.mitmproxy.org/stable/addons-examples/) in the VM. 
+Create a .py file ([http-query.py](mitmproxy/http-query.py), which already exists in this repository. Copy the following code to this file and save it. Remember to replace <host_ip> with your Ubuntu VM’s ip.
 ```
 """Modify HTTP query parameters."""
 from mitmproxy import http
@@ -147,7 +148,7 @@ def request(flow: http.HTTPFlow) -> None:
         flow.request.query["Humidity"] = "10000"
 ```
 
-Run the script using command:
+Run the script using the following command:
 ```
 mitmdump -s /home/iot/Documents/http-query.py
 ```   
@@ -157,11 +158,11 @@ You will see the responses from the server are modified.
     
 # 5. MITM against HTTPS
 
-mitmproxy is able to [decrypt encrypted traffic on the fly](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/). There are two methods to enable such function.
+mitmproxy is able to [decrypt encrypted traffic on the fly](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/). There are two methods to enable such functionality.
 - Create a private key and self signed certificate for mitmproxy and install mitmproxy’s certificate on the client device, i.e., the ESP32 in our case. This is more realsitic in practice. This method has its own challenge. The attacker needs to embed mitmproxy's certificate into the client device. This often involves quite some reverse engineeering of the client device.
 - Use the web server's private key and self-signed server certificate as mitmproxy. The method is not that realistic. In practice, the attacker often wants to analyze the communication between the device and the server. It is not hard for the attacker to get a client device. For example, they can just purchase one. However, i is hard for the attacker to get the server's private key. 
 
-We show the first method in Section 7 of this page. The second method is easy to deploy and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. We first generate the required PEM format file by running command:
+We show the first method in [Section 7](#7.-Replace-certificate-in-firmware) of this page. The second method is easy to deploy and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. We first generate the required PEM format file by running command:
 ```
 cd ~/Documents
 sudo cat /etc/ssl/private/my-server.key /etc/ssl/certs/my-server.crt > mitmCA.pem
