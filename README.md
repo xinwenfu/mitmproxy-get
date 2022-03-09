@@ -218,6 +218,14 @@ idf.py menuconfig
 WiFi crendentials are changed through menuconfig for this project 
 <img src="imgs/menuconfig-wifi.PNG">
 
+We then dump the entire flash of the ESP32
+```
+esptool.py read_flash 0 0x400000 flash_contents.bin
+```
+Use HxD to find the certificate in the flash and replace it
+
+<img src="imgs/HxD.PNG">
+
 
 # Notes
 
