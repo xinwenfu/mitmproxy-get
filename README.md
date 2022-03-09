@@ -161,6 +161,7 @@ You will see the responses from the server are modified.
 mitmproxy is able to [decrypt encrypted traffic on the fly](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/). There are two methods to enable such functionality.
 - Create a private key and self signed certificate for mitmproxy and install mitmproxy’s certificate on the client device, i.e., the ESP32 in our case. This is more realsitic in practice. This method has its own challenge. The attacker needs to embed mitmproxy's certificate into the client device. This often involves quite some reverse engineeering of the client device.
 
+The figure below shows the web server has a public (contained in the certificate) and private key pair (e<sub>S</sub>, d<sub>S</sub>), where e<sub>S</sub> is the public key and d<sub>S</sub> is the private key.
 <img src="imgs/mitm-em.png">
 
 - Use the web server's private key and self-signed server certificate as mitmproxy. The method is not that realistic. In practice, the attacker often wants to analyze the communication between the device and the server. It is not hard for the attacker to get a client device. For example, they can just purchase one. However, i is hard for the attacker to get the server's private key. 
