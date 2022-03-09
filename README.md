@@ -198,24 +198,23 @@ sudo sysctl -w net.ipv4.ip_forward=0
 # 7. Replace certificate in firmware 
 We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. The attacker cannot use the web server's private key for its mitmproxy. The attacker has to generate a private and certificate for mitmproxy. Therefore, the web server's certificate in the ESP32 firmware shall be replaced with mitmproxy's certificate. We will show how to dump the firmware and use a hex editor to replace the certificate in the firmware.
 
-We will use the "esp-idf/examples/protocols/https_server" example and use the native *idf.py* commands of ESP-IDF. Open a terminal and enter the [following command](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/)
+We will use the "esp-idf/examples/protocols/https_request" example and use esp-idf's native *idf.py* commands of ESP-IDF. Open a terminal and enter the [following command](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/)
 ```
 . $HOME/esp/esp-idf/export.sh
 ```
 
-In the demo, when we create a private key and certificate under esp-idf, we shall specify an earlier (than today) start date for the certificate. Otherwise, during connecting to the web server, tls at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
+In the demo, when we create a private key and certificate under esp-idf, we shall specify a start date earlier today for the certificate. Otherwise, while connecting to the web server, *tls* at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
 ```
 sudo apt install faketime
 sudo faketime '2021-12-24 08:15:42' openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout my-server.key -out my-server.crt
 ```
 
-Another complexity is by default, the bootloader of the ESP32 will perform image validation before booting. When we change the firmware with a hex editor and replace only the certificate, the ESP32 will not boot. The checksum for image validation has to be changed too. 
+Another complexity is the bootloader of the ESP32 will perform image validation before booting by default. When we change the firmware with a hex editor and replace only the certificate, the ESP32 will not boot. The checksum for image validation has to be changed too. 
 
-For simplicity, we disable image validation by the bootload through the following command
+For simplicity, we disable image validation by the bootload through menuconfig
 ```
 idf.py menuconfig
 ```
-
 <img src="imgs/menuconfig-bootload-image-validation.PNG">
 
 WiFi crendentials are changed through menuconfig for this project 
@@ -229,17 +228,17 @@ Use HxD to find the certificate in the flash and replace it
 
 <img src="imgs/HxD.PNG">
 
-The changed firmware can be written into the ESP32 via the following command
+The changed firmware can be written back into the ESP32 via the following command
 ```
 esptool.py write_flash 0 flash_contents.bin
 ```
 
-Now we can perform the mitmproxy attack above again. 
+Now we can perform the mitmproxy attack above again with the following configurations 
 - The web server has its own private key and certificate. 
 - mitmproxy has its own private key and certificate. 
-- The ESP32 firmware uses mitmproxy's certificate through the hex editor.
+- The ESP32 firmware uses mitmproxy's certificate.
 
-The picture below shows mitmproxy intercepts the https request from the ESP32.
+The picture below shows mitmproxy can intercept the https request from the ESP32.
 <img src="imgs/mitm-real.png">
 
 # Notes
