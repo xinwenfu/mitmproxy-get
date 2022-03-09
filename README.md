@@ -25,7 +25,7 @@ Type the following commands in a terminal at Ubuntu VM.
 sudo apt update
 sudo apt install apache2
 ```
-You can test the installed server by typing in the IP address of the host VM in a web browser.
+You can test the installed server by typing the IP address of the host VM in a web browser.
 ![image](https://user-images.githubusercontent.com/69218457/156863561-96d0e26f-c1bf-4c27-aa16-26b0ba8c8a1a.png)
 
 
