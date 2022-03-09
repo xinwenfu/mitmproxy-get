@@ -240,7 +240,7 @@ We show how to dump the firmware and use a hex editor to perform the replacement
 ```
 esptool.py read_flash 0 0x400000 flash_contents.bin
 ```
-Use HxD to find the certificate in the flash and replace it via *Edit* -> *Paste write*
+Use [HxD](https://mh-nexus.de/en/hxd/) to find the certificate in the flash and replace it via *Edit* -> *Paste write*
 
 <img src="imgs/HxD.PNG">
 
