@@ -197,6 +197,12 @@ sudo sysctl -w net.ipv4.ip_forward=0
 
 # Notes
 
+## Reset https
+To reset apache2/remove the apache2 config files,
+```
+sudo apt-get purge apache2
+```
+
 ## Skip image validation
 
 The bootloader of ESP32 can validate the app image before booting it. This feature can be [disabled](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/kconfig.html).
