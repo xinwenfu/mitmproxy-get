@@ -208,12 +208,16 @@ sudo faketime '2021-12-24 08:15:42' openssl req -x509 -nodes -days 365 -newkey r
 
 Another complexity is by default, the bootloader of the ESP32 will perform image validation before booting. When we change the firmware with a hex editor and replace only the certificate, the ESP32 will not boot. The checksum for image validation has to be changed too. 
 
-For simplicity, we disable image validation by the bootload through
+For simplicity, we disable image validation by the bootload through the following command
 ```
 idf.py menuconfig
 ```
 
 <img src="imgs/menuconfig-bootload-image-validation.PNG">
+
+WiFi crendentials are changed through menuconfig for this project 
+<img src="imgs/menuconfig-wifi.PNG">
+
 
 # Notes
 
