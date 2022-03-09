@@ -217,7 +217,7 @@ We will use the "esp-idf/examples/protocols/https_request" example and use esp-i
 ```
 . $HOME/esp/esp-idf/export.sh
 ```
-Another complexity is the bootloader of the ESP32 will perform image validation before booting by default. When we change the firmware with a hex editor and replace only the certificate, the ESP32 will not boot. The checksum for image validation has to be changed too. 
+Another complexity is by default the bootloader of the ESP32 performs image/firmware validation before booting. When we change the firmware with a hex editor and replace only the certificate, the ESP32 will not boot. The checksum for image validation has to be changed too. 
 For simplicity, we disable image validation by the bootload through menuconfig
 ```
 idf.py menuconfig
