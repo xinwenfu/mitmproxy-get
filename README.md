@@ -196,7 +196,7 @@ sudo sysctl -w net.ipv4.ip_forward=0
 ```
 
 # 7. Replace certificate in firmware 
-We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. The attacker cannot user the web server's private key. The attacker has to generate a private and certificate for mitmproxy. However, the web server's certificate in the ESP32 shall be replaced with mitmproxy's certificate.
+We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. The attacker cannot use the web server's private key for its mitmproxy. The attacker has to generate a private and certificate for mitmproxy. Therefore, the web server's certificate in the ESP32 firmware shall be replaced with mitmproxy's certificate. We will show how to dump the firmware and use a hex editor to replace the certificate in the firmware.
 
 We will use the "esp-idf/examples/protocols/https_server" example and use the native *idf.py* commands of ESP-IDF. Open a terminal and enter the [following command](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/)
 ```
