@@ -185,7 +185,7 @@ mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query
 ![image](https://user-images.githubusercontent.com/69218457/156868252-acadefc5-4201-490c-b736-82787fb9cb4c.png)
 
 
-# Reset iptables
+# 6. Reset iptables
 
 After the tasks are done, iptables shall be reset. Otherwise, normal web browsing may be messed up.
 
@@ -194,6 +194,19 @@ Reset iptables by restarting the VM, or by running commands.
 sudo iptables -t nat -F
 sudo sysctl -w net.ipv4.ip_forward=0
 ```
+
+# 7. Replace certificate in firmware 
+We will use the "esp-idf/examples/protocols/https_server" example.
+
+We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. The attacker cannot user the web server's private key. The attacker has to generate a private and certificate for mitmproxy. However, the web server's certificate in the ESP32 shall be replaced with mitmproxy's certificate.
+
+In the demo, when we create a private key and certificate under esp-idf, we shall specify an earlier (than today) start date for the certificate. Otherwise, during connecting to the web server, tls at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
+```
+sudo apt install faketime
+sudo faketime '2021-12-24 08:15:42' openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout my-server.key -out my-server.crt
+```
+
+
 
 # Notes
 
