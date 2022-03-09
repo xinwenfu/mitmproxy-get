@@ -196,12 +196,12 @@ sudo sysctl -w net.ipv4.ip_forward=0
 ```
 
 # 7. Replace certificate in firmware 
-We will use the "esp-idf/examples/protocols/https_server" example. To use *idf.py* commands, open a terminal and enter the [following command](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/)
+We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. The attacker cannot user the web server's private key. The attacker has to generate a private and certificate for mitmproxy. However, the web server's certificate in the ESP32 shall be replaced with mitmproxy's certificate.
+
+We will use the "esp-idf/examples/protocols/https_server" example and use the native *idf.py* commands of ESP-IDF. Open a terminal and enter the [following command](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/)
 ```
 . $HOME/esp/esp-idf/export.sh
 ```
-
-We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. The attacker cannot user the web server's private key. The attacker has to generate a private and certificate for mitmproxy. However, the web server's certificate in the ESP32 shall be replaced with mitmproxy's certificate.
 
 In the demo, when we create a private key and certificate under esp-idf, we shall specify an earlier (than today) start date for the certificate. Otherwise, during connecting to the web server, tls at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
 ```
