@@ -276,10 +276,6 @@ sudo a2enmod php7.0
 sudo systemctl restart apache2
 ```
 
-## Skip image validation
-
-The bootloader of ESP32 can validate the app image before booting it. This feature can be [disabled](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/kconfig.html).
-
 
 ## Disable apache2 virtual host entry
 
