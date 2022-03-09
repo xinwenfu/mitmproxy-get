@@ -234,6 +234,12 @@ The changed firmware can be written into the ESP32 via the following command
 esptool.py write_flash 0 flash_contents.bin
 ```
 
+Now we can perform the mitmproxy attack above again. 
+- The web server has its own private key and certificate. 
+- mitmproxy has its own private key and certificate. 
+- The ESP32 firmware uses mitmproxy's certificate through the hex editor.
+
+<img src="imgs/mitm-real.png">
 
 # Notes
 
