@@ -162,7 +162,7 @@ mitmproxy is able to [decrypt encrypted traffic on the fly](https://docs.mitmpro
 - Create a private key and self signed certificate for mitmproxy and install mitmproxy’s certificate on the client device, i.e., the ESP32 in our case. This is more realsitic in practice. This method has its own challenge. The attacker needs to embed mitmproxy's certificate into the client device. This often involves quite some reverse engineeering of the client device.
 - Use the web server's private key and self-signed server certificate as mitmproxy. The method is not that realistic. In practice, the attacker often wants to analyze the communication between the device and the server. It is not hard for the attacker to get a client device. For example, they can just purchase one. However, i is hard for the attacker to get the server's private key. 
 
-We show the first method in [Section 7](#Replace-certificate-in-firmware) of this page. The second method is easy to deploy and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. We first generate the required PEM format file by running command:
+We show the first method in [Section 7](#7-Replace-certificate-in-firmware) of this page. The second method is easy to deploy and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. We first generate the required PEM format file by running command:
 ```
 cd ~/Documents
 sudo cat /etc/ssl/private/my-server.key /etc/ssl/certs/my-server.crt > mitmCA.pem
