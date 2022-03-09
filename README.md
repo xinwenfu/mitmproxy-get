@@ -45,8 +45,10 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 
 - Enable the https server and restart apache2 to start both http and https servers. It appears we shall not use the full path of my-server.conf with a2ensite. The following command is just fine.
 ```
+sudo a2enmod ssl
+systemctl restart apache2
 sudo a2ensite my-server.conf
-sudo systemctl restart apache2
+systemctl reload apache2
 ```
 
 ## Install PHP
