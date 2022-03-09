@@ -239,6 +239,7 @@ Now we can perform the mitmproxy attack above again.
 - mitmproxy has its own private key and certificate. 
 - The ESP32 firmware uses mitmproxy's certificate through the hex editor.
 
+The picture below shows mitmproxy intercepts the https request from the ESP32.
 <img src="imgs/mitm-real.png">
 
 # Notes
