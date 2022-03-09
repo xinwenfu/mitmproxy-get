@@ -7,7 +7,7 @@ Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS,
 - *mitmweb*: a web-based interface for mitmproxy.
 - *mitmdump*: the command-line version of mitmproxy.
 
-![](imgs/original.png width=320)
+![](imgs/original.png | width=320)
 *Original Setup*
 
 The figure below shows how the man-in-the-middle (MITM) attack works. Basically mitmproxy sits between the ESP32 and web server, and mitmproxy can intercept the http/https traffic. We demonstrate a simplified case: mitmproxy is hosted at the same computer as the web server. In reality, mitmproxy can be hosted at a standlone computer, which can work as a WiFi router, to which the esp32 will connect. In this way, we can intercept esp32 traffic and analyze the communication protocol.
