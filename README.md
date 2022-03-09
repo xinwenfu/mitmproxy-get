@@ -207,7 +207,7 @@ sudo sysctl -w net.ipv4.ip_forward=0
 
 # 7. Replace certificate in firmware 
 Here is the scenarion we consider: a victim ESP32 device contains the web server's certificate, and communicates with the web server. 
-In this demo, we use the ESP-IDF environment to build the firmware. In the ESP-IDF environment, when we create a private key and certificate for the web server, we shall specify a start date earlier today for the certificate. Otherwise, while connecting to the web server, *tls* at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
+In this demo, we use the ESP-IDF environment to build the firmware of the victim ESP32 device. In the ESP-IDF environment, when we create a private key and certificate for the web server, we shall specify a start date earlier today for the certificate. Otherwise, while connecting to the web server, *tls* at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
 ```
 sudo apt install faketime
 sudo faketime '2021-12-24 08:15:42' openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout my-server.key -out my-server.crt
