@@ -67,6 +67,8 @@ Restart Apache2 server
 sudo systemctl restart apache2.service
 ```
 
+Refer to [this section](#Fix-php-not-working) if php does not work.
+
 ## Copy PHP script to web folder
 Copy [test_get.php](web/test_get.php) in this repository to /var/www/html at Ubuntu. The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
 We can also test the server by visiting the following link in a browser: *https://Ubuntu-VM-IP/test_get.php?Temperature=21&Humidity=20*, which sends Temperature=21 and Humidity=20 to the web server.
@@ -272,7 +274,7 @@ To reset apache2/remove the apache2 config files,
 sudo apt-get purge apache2
 ```
 
-## Fix php not working
+## Fix php not working 
 After installing php, if php does not work, use the following commands
 ```
 sudo a2dismod mpm_event
