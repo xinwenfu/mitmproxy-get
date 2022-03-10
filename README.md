@@ -211,7 +211,9 @@ sudo sysctl -w net.ipv4.ip_forward=0
 ```
 
 # 7. Replace certificate in firmware 
-Here is the scenarion we consider: a victim ESP32 device contains the web server's certificate, and communicates with the web server. 
+We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. 
+Here is the scenarion we consider: a victim ESP32 device contains the web server's certificate, and communicates with the web server via https. The attacker wants to use mitmproxy to analyze the network traffic between the ESP32 and web server. We assume the attacker cannot get the web server's private key. Therefore, the attacker needs to generate a private key and certificate for mitmproxy and replace the victim device's certificate with mitmproxy's certificate.
+
 In this demo, we use the ESP-IDF environment to build the firmware of the victim ESP32 device. In the ESP-IDF environment, when we create a private key and certificate for the web server, we shall specify a start date earlier today for the certificate. Otherwise, while connecting to the web server, *tls* at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
 ```
 sudo apt install faketime
@@ -240,8 +242,8 @@ idf.py -p /dev/ttyUSB0 flash monitor
 ```
 Make sure the firmware works.
 
-We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. We assume that the attacker cannot use the web server's private key for its mitmproxy. The attacker has to generate a private key and certificate for mitmproxy, and replace the web server's certificate in the ESP32 firmware with mitmproxy's certificate. 
-We show how to dump the firmware and use a hex editor to perform the replacement. We dump the entire flash of the ESP32
+
+We show how to dump the firmware and use a hex editor to replace the certificate in the ESP32 with mitmproxy's certificate. We dump the entire flash of the ESP32
 ```
 esptool.py read_flash 0 0x400000 flash_contents.bin
 ```
