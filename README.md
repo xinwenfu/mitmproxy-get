@@ -212,7 +212,7 @@ sudo sysctl -w net.ipv4.ip_forward=0
 
 # 7. Replace certificate in firmware 
 We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. 
-Here is the scenarion we consider: a victim ESP32 device contains the web server's certificate, and communicates with the web server via https. The attacker wants to use mitmproxy to analyze the network traffic between the ESP32 and web server. We assume the attacker cannot get the web server's private key. Therefore, the attacker needs to generate a private key and certificate for mitmproxy and replace the victim device's certificate with mitmproxy's certificate.
+Here is the scenarion we consider: a victim ESP32 device communicates with the web server via https, and contains the web server's certificate. The attacker wants to use mitmproxy to analyze the network traffic between the ESP32 and web server. We assume the attacker cannot get the web server's private key. Therefore, the attacker needs to generate a private key and certificate for mitmproxy and replace the victim device's certificate with mitmproxy's certificate.
 
 In this demo, we use the ESP-IDF environment to build the firmware of the victim ESP32 device. In the ESP-IDF environment, when we create a private key and certificate for the web server, we shall specify a start date earlier today for the certificate. Otherwise, while connecting to the web server, *tls* at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
 ```
