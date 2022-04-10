@@ -195,7 +195,7 @@ mitmproxy --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure
 ![image](https://user-images.githubusercontent.com/69218457/156868802-d30c23a1-228e-4bcb-acf5-cf2bb56e9474.png)
 
 
-Run mitmdump to change the https requests
+Run mitmdump to change the https requests. Note: *http-query.py* shall be changed to reflect the https url.
 ```
 mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
 ```
