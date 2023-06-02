@@ -56,7 +56,7 @@ extern const char ca_cert_pem_start[] asm("_binary_ca_cert_pem_start");
 extern const char ca_cert_pem_end[]   asm("_binary_ca_cert_pem_end");
 
 // WIFI Defines
-// These are from the station example refrence linked to at the wifi function comment
+// These are from the station example reference linked to at the wifi function comment
 /* The examples use WiFi configuration that you can set via project configuration menu
    If you'd rather not, just change the below entries to strings with
    the config you want - ie #define EXAMPLE_WIFI_SSID "mywifissid"
@@ -226,6 +226,16 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
   return ESP_OK;
 }
 
+
+//********************************************************
+// Function: This is a function that will make the HTTP or 
+// HTTPS request using the ESP32 HTTP client library
+//
+// Arguments: Generic pointer (required by xTaskCreate)
+// Return Value: None
+// Ref: For the HTTP client functions https://github.com/espressif/esp-idf/blob/master/examples/protocols/esp_http_client/main/esp_http_client_example.c#L763 
+//********************************************************
+
 void http_request(void* args) {
   float temp = 0.0, humidity = 0.0;
   char url_str[MAX_URL_LEN];
@@ -284,7 +294,7 @@ void http_request(void* args) {
 //********************************************************
 // Function: This is a function called on the completion of an event
 // This is used for the WIFI functions
-// Arguments: rgument list, event, event_id and data (generic)
+// Arguments: argument list, event, event_id and data (generic)
 // Return Value: None
 // Ref: https://github.com/espressif/esp-idf/tree/master/examples/wifi/getting_started/station
 //********************************************************
@@ -313,13 +323,13 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
 
 
 //********************************************************
-// Function: Initalize WiFi, blocking operation
+// Function: Initialize WiFi, blocking operation
 // Arguments: None
 // Return Value: None
 //
 // Ref: https://github.com/espressif/esp-idf/tree/master/examples/wifi/getting_started/station
 //
-// NOTE: We can use a helper function insted of this as refernced 
+// NOTE: We can use a helper function instep of this as referenced 
 // https://github.com/espressif/esp-idf/tree/master/examples/protocols
 //********************************************************
 void wifi_init_sta(void)
@@ -354,7 +364,7 @@ void wifi_init_sta(void)
         .sta = {
             .ssid = EXAMPLE_ESP_WIFI_SSID,
             .password = EXAMPLE_ESP_WIFI_PASS,
-            /* Authmode threshold resets to WPA2 as default if password matches WPA2 standards (pasword len => 8).
+            /* Authmode threshold resets to WPA2 as default if password matches WPA2 standards (password len => 8).
              * If you want to connect the device to deprecated WEP/WPA networks, Please set the threshold value
              * to WIFI_AUTH_WEP/WIFI_AUTH_WPA_PSK and set the password with length and format matching to
              * WIFI_AUTH_WEP/WIFI_AUTH_WPA_PSK standards.
@@ -394,7 +404,7 @@ void wifi_init_sta(void)
 
 //********************************************************
 // Function: Utilize ESP32 AHT Library to load values into 
-// The ponter float arguments 
+// The pontes float arguments 
 //
 // Arguments:
 // float* temperature: Pointer to float, temp value read from 
@@ -404,7 +414,7 @@ void wifi_init_sta(void)
 // will be stored here after return (IF return of func is 1)
 //
 // Return Value:
-// 1: Function succesfully read Temp and Humidity values
+// 1: Function successfully read Temp and Humidity values
 // 0: otherwise
 // 
 // Ref: https://github.com/UncleRus/esp-idf-lib/tree/master/examples/aht/default
