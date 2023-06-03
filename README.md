@@ -1,149 +1,175 @@
-# MITM attacks against http and https through mitmproxy
+# MITM attacks against HTTP and HTTPS with mitmproxy
 
-In this project, we will learn using mitmproxy to monitor, and modify HTTP/HTTPS traffic manually, and how to use mitmdump with python script to modify HTTP/HTTPS query automatically. Those tools can be used for real attacks and for the purpose of understanding the communication protocol.
+In this project, we will learn how to monitor and modify HTTP/HTTPS traffic using mitmproxy. Using mitmproxy we can manually modify HTTP/HTTPS traffic or use mitmdump along with a python script to modify the HTTP/HTTPS queries automatically. These tools can be used for real attacks and for the purpose of understanding communication protocols.
 
-Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS, Websocket, and generic TCP flows. Mitmproxy tools contain three front-end tools, which work with the same core proxy. 
+Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS, Websocket, and generic TCP flows. The mitmproxy toolset contains three front-end tools, which work with the same core proxy. 
 - *mitmproxy*: an interactive, SSL/TLS-capable intercepting proxy with a console interface.
 - *mitmweb*: a web-based interface for mitmproxy.
 - *mitmdump*: the command-line version of mitmproxy.
 
-# Goal
-The figure below shows the original setup. The ESP32 communicates with the web server using https. The attacker wants to find out the communication protcol between the ESP32 and web server.
+## Goal
+The figure below shows the original network setup. The ESP32 communicates with the web server using HTTP or HTTPS. The attacker wants to find out the protocol used in the communication between the ESP32 and web server.
 
 <img src="imgs/original.png" alt="Original Setup" height="220"/>
 
-The figure below shows how the attacker can use the man-in-the-middle (MITM) attack to perform traffic analysis and understand the communication protocol. Basically mitmproxy sits between the ESP32 and web server, and mitmproxy can intercept the http/https traffic. We demonstrate a simplified case: mitmproxy is hosted at the same computer as the web server. In reality, mitmproxy can be hosted at a standlone computer, which can work as a WiFi router, to which the esp32 will connect. In this way, we can intercept esp32 traffic and analyze the communication protocol.
+The figure below shows how the attacker can use a man-in-the-middle (MITM) attack to perform traffic analysis and understand the communication protocol. The mitmproxy system sits between the ESP32 and web server, and because of this mitmproxy can intercept the http/HTTPS traffic. This demonstrations utilizes a simplified case: mitmproxy is hosted on the same computer as the web server. In reality, mitmproxy can be hosted on a standalone computer, which can work as a WiFi router, to which the esp32 would connect. In this more complicated scenario, we can continue intercept esp32 traffic and analyze the communication protocol.
 
-<img src="imgs/mitm.png">
+<img src="imgs/mitm.png"  height="220">
 
-# 1. Hardware setup
-This project requires a ES32 board, installation of adafruit/DHT sensor library within PlatformIO and apache web server at Ubuntu VM. The ESP32 sends DHT11/DHT22 data to a web server at a Ubuntu VM. The IP address of the web server is hard-coded into the formware code. The ESP32 and Ubuntu VM are connected to the same WiFi router.
+## 1. Hardware setup
+This project requires an ES32 board, along with the installation of [esp-idf](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/linux-macos-setup.html) and [esp-idf-lib](https://esp-idf-lib.readthedocs.io/en/latest/). These are already installed in the Ubuntu-VM and located at ``` /home/iot/esp/ ```, the AHT sensor library is located in the ``` /home/iot/esp/esp-idf-lib/components ``` directory. The ESP32 will read the AHT data and send it to a web server at the Ubuntu VM. The IP address of the web server is hard-coded into the firmware code. The ESP32 and Ubuntu VM should be connected to the same WiFi router.
 
+
+**// NEED NEW IMAGE**
 <img src="imgs/mitm-labsetup.jpg">
 
-# 2. Software setup
+## 2. Software setup
 
-## Install Apache web server at Ubuntu VM
+### Install Apache web server at Ubuntu VM
 
-Type the following commands in a terminal at Ubuntu VM.
-```
+The following commands can be used in a terminal at the Ubuntu VM to install an Apache web server. Take note that the *#* indicates a comment in the code block below.
+```sh
+# Update package index of available packages
 sudo apt update
+# Install  Apache web server.
 sudo apt install apache2
 ```
 You can test the installed server by typing the IP address of the host VM in a web browser.
 ![image](https://user-images.githubusercontent.com/69218457/156863561-96d0e26f-c1bf-4c27-aa16-26b0ba8c8a1a.png)
 
 
-## Enable https on Apache web server 
+### Enable HTTPS on Apache web server 
 
-The hard part is to enable https with Apache at Ubuntu. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/). 
-The following video shows an example.
+The hardest part of this setup is enabling HTTPS on the Apache web server. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/) for more details. 
+
+
+The following video shows an example of how we can setup HTTPS on the Apache web server.
 
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
 - The following command creates the https web server's private key (/etc/ssl/private/my-server.key) and self-signed SSL certificate (/etc/ssl/certs/my-server.crt). Do NOT protect the private key of the web server with a password since the web server will not be able to start without a user entering the password. While running this command, the *common name* of the web server must be the IP address of the Ubuntu VM what hosts the web server.
-```sh
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/server_key.key -out /etc/ssl/certs/server_cert.crt
-```
+    ```sh
+    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/server_key.key -out /etc/ssl/certs/server_cert.crt
+    ```
 
-- Edit the configuration file that configures a VirtualHost as the https server. With VirtualHosts, user requests can be directed to multiple host names or IP addresses on the same host computer. Each virtual host can offer different content and to act differently.
-Here is an example https configuration file [my-server.conf](web/my-server.conf) in this repository. Copy the example my-server.conf to /etc/apache2/sites-available/ using the sudo command if needed. 
+- Edit the configuration file that specifies and configures a VirtualHost as the https server. With VirtualHosts, user requests can be directed to multiple host names or IP addresses on the same host computer. Each virtual host can offer different content and act differently.
+    We provide an example https VirtualHost configuration file [my-server.conf](web/my-server.conf) in this repository. Copy the example my-server.conf to ``` /etc/apache2/sites-available/ ```using the sudo command if needed. 
 
 - Enable the ssl module and https server. Restart apache2 to start both http and https servers. It appears we shall not use the full path of my-server.conf with a2ensite. The following command is just fine.
-```
-sudo a2enmod ssl
-systemctl restart apache2
-sudo a2ensite my-server.conf
-systemctl reload apache2
-```
+    ```sh 
+    # Enable SSL (HTTPS)
+    sudo a2enmod ssl
+    # Restart Apache web server service, this applies our changes
+    systemctl restart apache2
+    # Enables our VirtualHost site
+    sudo a2ensite my-server.conf
+    # Make Apache re-read configuration files and apply changes
+    systemctl reload apache2
+    ```
 
-## Install PHP
-Install PHP and Apache PHP module by running the following commands
-```
+### Install PHP
+Install PHP and the Apache PHP module by running the following commands.
+```sh
 sudo apt install php libapache2-mod-php
 ```
-Restart Apache2 server
-```
+Restart Apache2 server to apply the changes.
+```sh
 sudo systemctl restart apache2.service
 ```
 
-Refer to [this section](#Fix-php-not-working) if php does not work.
+Refer to the [Fix php](#Fix-php-not-working) section if php does not work.
 
-## Copy PHP script to web folder
-Copy [test_get.php](web/test_get.php) in this repository to /var/www/html at Ubuntu. The php script returns the temerature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
-We can also test the server by visiting the following link in a browser: *https://Ubuntu-VM-IP/test_get.php?Temperature=21&Humidity=20*, which sends Temperature=21 and Humidity=20 to the web server.
+### Copy PHP script to web folder
+Copy the [test_get.php](web/test_get.php) file in this repository to the ``` /var/www/html ``` directory on the Ubuntu VM. The php script returns the temperature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgement. 
+We can also test the server by visiting the following link in a browser: *https://Ubuntu-VM-IP/test_get.php?Temperature=21&Humidity=20*, which sends Temperature=21 and Humidity=20 values to the web server.
 
 
-## Install mitmproxy
-Download mitmproxy
-```
+### Install mitmproxy
+Download mitmproxy using the command below. Note that if you ran ``` sudo apt update ```  previously it is not needed here.
+```sh
 sudo apt install mitmproxy
 ```
 
-## Clone this project
+### Clone this project
 Download this project to Ubuntu VM, start VS code and use *File*->*Open Folder...* to load the project.
-```
+```sh
 cd ~/Documents
 git clone https://github.com/xinwenfu/mitmproxy-get.git
 ```
 
-The code supports both http and https conenctions through a macro definition in the code. 
-Make sure the code has the correct macro defintion in different tasks.
+The code located in ``` ./http_request ``` directory of this project supports both HTTP and HTTPS connections through a macro definition in the code.  Make sure the code has the correct macro definition defined in the tasks described below. Also make sure both macro definitions **are not** used simultaneously.
 
-Enable *FU_HTTP* definition as follows to connect to the http server.
+Enable the *FU_HTTP* definition as follows to connect to the server using HTTP.
 ```
 #define FU_HTTP
 ```
 
-Enable *FU_HTTPS* definition as follows to connect to the https server.
+Enable the *FU_HTTPS* definition as follows to connect to the server using HTTPS.
 ```
 #define FU_HTTPS
 ```
 
    
-# 3. Set up iptables intercepting http traffic
-mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, we need to redirect traffic sent to to ports 80 and 443 using the tool [iptables](https://linux.die.net/man/8/iptables) in Linux to the port that mitmproxy listens on. Note: These chages will be lost after next computer rebooting.
+## 3. Set up iptables to intercept http traffic
+Mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, we need to redirect traffic sent to to ports 80 and 443 of the host using the tool [iptables](https://linux.die.net/man/8/iptables). We will use iptables to redirect traffic to the port that mitmproxy listens on. Note: These changes will be lost once the computer reboots, unless additional measures are taken.
 
-Enable IP forwarding
-```
+Enable IP forwarding with the following command.
+```sh
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 
 Create an iptables rule set that redirects desired traffic to mitmproxy
-```
+```sh
+# Redirect all TCP traffic directed at port 443 (HTTPS) to port 8080
 sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080
+# Redirect all TCP traffic directed at port 80 (HTTP) to port 8080
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 ```
 
-Check added iptables rules using the following command
-```
+We can check that the iptables rules have been added iptables rules using the following command
+```sh
 sudo iptables -t nat -L
 ```
 
-# 4. MITM against HTTP
+## 4. MITM against HTTP
 
-## Start up mitmproxy
-To start up mitmproxy with the console interface, open a command terminal in the directory of mitmproxy and type in
-```
+### Start mitmproxy
+To start the mitmproxy program with a console interface, open a command terminal and type in the command below. This should be done in the in the directory mitmproxy of this project for later tasks.
+```sh
+# Enter into the mitmproxy directory
+cd ./mitmproxy
+# Start the mitmproxy console interface
 mitmproxy
 ```
 
-## Monitor HTTP flows
-Let’s test if mitmproxy can monitor HTTP flows.
-Run the http version of the firmware on ESP32 and observe the http requests in mitmproxy.
+### Monitor HTTP flows
+Let’s test if mitmproxy can detect and monitor the HTTP flows between the ESP32 and Apache web server.
+
+Run the http version of the firmware on ESP32 and observe the http requests in mitmproxy. This can be done with the following steps.
+1. Open the *mitm_request* directory in this repository.  
+2. Open the [request.c](http_request/main/request.c) file and modify the serverName variable. 
+    ```c
+    // Change ubuntu-vm-ip below to your Ubuntu VM IP
+    char* serverName = "ubuntu-vm-ip/test_get.php";
+    ```
+3. Modify the configuration using ``` idf.py menuconfig ``` in the ESP-IDF terminal or GUI option.
+    * Add the WiFi SSID and Password in the Example WIFI Configuration menu.
+4. Build the project.
+5. Flash the project.
+6. Utilize the Serial Monitor to verify the program is connecting to the WiFI and sending requests.
 
 ![image](https://user-images.githubusercontent.com/69218457/156868428-a9f0f869-2e35-40e3-afdb-652006ec86c6.png)    
     
-## Intercept and modify HTTP traffic (script) 
+### Intercept and modify HTTP traffic (script) 
 
-Stop mitmproxy by by pressing *Ctrl+c*, then press *y*.
+Stop mitmproxy by by pressing *Ctrl+c* or *q*, then press *y*.
 
-We now use *mitmdump* with a python script to modify HTTP traffic sent from ESP32 automatically.
-Setup ESP32 and make sure that you can see responses from the web server in the VS code console.
+Now we can use *mitmdump* with a python script to modify the intercepted HTTP traffic sent from ESP32 automatically.
+Setup the ESP32 and make sure that you can see responses from the web server in the VS code console using the method described in [monitor HTTP flows](#monitor-http-flows).
 
 Let’s create the [python script](https://docs.mitmproxy.org/stable/addons-examples/) in the VM. 
-Create a .py file ([http-query.py](mitmproxy/http-query.py), which already exists in this repository. Copy the following code to this file and save it. Remember to replace <host_ip> with your Ubuntu VM’s ip.
-```
+Create a .py file and copy the following code to this file and save it. Take note that this already exists as [http-query.py](mitmproxy/http-query.py) in this repository. Remember to replace \<host_ip\> with your Ubuntu VM’s ip which can be found using ``` ifconfig ``` in a terminal.
+```py
 """Modify HTTP query parameters."""
 from mitmproxy import http
 
@@ -155,15 +181,16 @@ def request(flow: http.HTTPFlow) -> None:
         flow.request.query["Humidity"] = "10000"
 ```
 
-Run the script using the following command:
-```
-mitmdump -s /home/iot/Documents/http-query.py
+We can run the script to modify the intercepted traffic using the following command:
+```sh
+# The path can be added if we are not in the mitmproxy folder. 
+mitmdump -s http-query.py
 ```   
-You will see the responses from the server are modified.
+You will see the responses from the server are modified when looking at the output in the Serial Monitor.
 
 ![image](https://user-images.githubusercontent.com/69218457/156868594-cce94736-2fcf-4a31-9082-d281a861fd01.png)
     
-# 5. MITM against HTTPS
+## 5. MITM against HTTPS
 
 mitmproxy is able to [decrypt encrypted traffic on the fly](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/). There are two methods to enable such functionality.
 - Create a private key and self signed certificate for mitmproxy and install mitmproxy’s certificate on the client device, i.e., the ESP32 in our case. This is more realsitic in practice. This method has its own challenge. The attacker needs to embed mitmproxy's certificate into the client device. This often involves quite some reverse engineeering of the client device.
@@ -201,7 +228,7 @@ mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query
 ```
 ![VirtualBox_UbuntuIoT_09_04_2022_21_14_18](https://user-images.githubusercontent.com/69218457/162596994-49d7ebc5-37fd-4641-8455-4e4dc13b68bc.png)
 
-# 6. Reset iptables
+## 6. Reset iptables
 
 After the tasks are done, iptables shall be reset. Otherwise, normal web browsing may be messed up.
 
@@ -211,14 +238,14 @@ sudo iptables -t nat -F
 sudo sysctl -w net.ipv4.ip_forward=0
 ```
 
-# 7. Replace certificate in firmware 
+## 7. Replace certificate in firmware 
 We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. 
-Here is the scenarion we consider: a victim ESP32 device communicates with the web server via https, and contains the web server's certificate. The attacker wants to use mitmproxy to analyze the network traffic between the ESP32 and web server. We assume the attacker cannot get the web server's private key. Therefore, the attacker needs to generate a private key and certificate for mitmproxy and replace the victim device's certificate with mitmproxy's certificate.
+Here is the scenario that we consider: a victim ESP32 device communicates with the web server via https, and contains the web server's certificate. The attacker wants to use mitmproxy to analyze the network traffic between the ESP32 and web server. We assume the attacker cannot get the web server's private key. Therefore, the attacker needs to generate a private key and certificate for mitmproxy and replace the victim device's certificate with mitmproxy's certificate.
 
 In this demo, we use the ESP-IDF environment to build the firmware of the victim ESP32 device. In the ESP-IDF environment, when we create a private key and certificate for the web server, we shall specify a start date earlier today for the certificate. Otherwise, while connecting to the web server, *tls* at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
 ```
 sudo apt install faketime
-sudo faketime '2021-12-24 08:15:42' openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout my-server.key -out my-server.crt
+sudo faketime '2021-12-24 08:15:42' openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mitm_server.key -out mitm_server.crt
 ```
 
 We will use the "esp-idf/examples/protocols/https_request" example and use esp-idf's native *idf.py* commands. Open a terminal and enter the [following command](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/)
@@ -265,15 +292,15 @@ Now we can perform the mitmproxy attack again with the following configurations
 The picture below shows mitmproxy can intercept the https request from the ESP32.
 <img src="imgs/mitm-real.png">
 
-# Notes
+## Notes
 
-## Reset https
+### Reset https
 To reset apache2/remove the apache2 config files,
 ```
 sudo apt-get purge apache2
 ```
 
-## Fix php not working 
+### Fix php
 After installing php, if php does not work, use the following commands
 ```
 sudo a2dismod mpm_event
@@ -285,7 +312,7 @@ sudo systemctl restart apache2
 ```
 
 
-## Disable apache2 virtual host entry
+### Disable apache2 virtual host entry
 
 The following [commands](https://itorn.net/disable-remove-virtual-host-website-entry-in-apache/) disable an apache2 virtual host (server) and restart apache2.
 ```
@@ -293,7 +320,7 @@ sudo a2dissite my-server
 sudo service apache2 reload
 ```
 
-## Intercept and modify HTTP traffic (manually)
+### Intercept and modify HTTP traffic (manually)
 
 To intercept requests with specific URLs, you need to enable the interception function and using specific filter expressions.
 

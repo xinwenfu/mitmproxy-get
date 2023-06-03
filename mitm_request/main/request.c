@@ -41,14 +41,9 @@ char* TAG = "HTTP_MITM_PROXY";
 // Define the max length of a URL (Number of chars)
 #define MAX_URL_LEN 480
 
-//Change ubuntu-vm-ip below to your Ubuntu VM IP
-#ifdef FU_HTTP
+// Change ubuntu-vm-ip below to your Ubuntu VM IP
 char* serverName = "ubuntu-vm-ip/test_get.php";
-#endif
-//Change ubuntu-vm-ip below to your Ubuntu VM IP
-#ifdef FU_HTTPS
-char* serverName = "ubuntu-vm-ip/test_get.php";
-#endif
+
 
 // Specify Server Cert file (loaded as binary)
 // Do not change unless the filename is changed!
@@ -239,7 +234,7 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 void http_request(void* args) {
   float temp = 0.0, humidity = 0.0;
   char url_str[MAX_URL_LEN];
-  char local_response_buffer[MAX_HTTP_RECV_BUFFER];
+  char local_response_buffer[MAX_HTTP_RECV_BUFFER] = {0};
 
   while(1) {
     // Delay Some number of tics to prevent overheating 
@@ -264,6 +259,7 @@ void http_request(void* args) {
     esp_http_client_config_t config = {
         
         .url = url_str,
+        .user_data = local_response_buffer,
         #ifdef FU_HTTPS
         .cert_pem = server_cert_crt_start,
         #endif
@@ -282,7 +278,7 @@ void http_request(void* args) {
     } else {
         ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
     }
-    ESP_LOG_BUFFER_HEX(TAG, local_response_buffer, strlen(local_response_buffer));
+    ESP_LOGI(TAG, "Server Response:\n%s" local_response_buffer);
     
     // Cleanup Client
     esp_http_client_cleanup(client);
