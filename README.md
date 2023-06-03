@@ -42,8 +42,8 @@ The following video shows an example.
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
 - The following command creates the https web server's private key (/etc/ssl/private/my-server.key) and self-signed SSL certificate (/etc/ssl/certs/my-server.crt). Do NOT protect the private key of the web server with a password since the web server will not be able to start without a user entering the password. While running this command, the *common name* of the web server must be the IP address of the Ubuntu VM what hosts the web server.
-```
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/my-server.key -out /etc/ssl/certs/my-server.crt
+```sh
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/server_key.key -out /etc/ssl/certs/server_cert.crt
 ```
 
 - Edit the configuration file that configures a VirtualHost as the https server. With VirtualHosts, user requests can be directed to multiple host names or IP addresses on the same host computer. Each virtual host can offer different content and to act differently.
@@ -181,11 +181,11 @@ The figure below shows the web server has a public (contained in the certificate
 We show the first method in [Section 7](#7-Replace-certificate-in-firmware) of this page. The second method is easy to deploy and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. We first generate the required PEM format file required by mitmproxy by running the following command:
 ```
 cd ~/Documents
-sudo cat /etc/ssl/private/my-server.key /etc/ssl/certs/my-server.crt > mitmCA.pem
+sudo cat /etc/ssl/private/my-server.key /etc/ssl/certs/server_cert.crt > mitmCA.pem
 ```
     
 Now we can run mitmproxy or mitmdump with two parameters: 
-- --certs *=/home/iot/mitmproxy/mitmCA.pem: configure the self-signed cert
+- --certs *=/home/iot/Documents/mitmCA.pem: configure the self-signed cert
 - --ssl-insecure: do not verify server certs
 
 Run mitmproxy to observe decrypted https requests

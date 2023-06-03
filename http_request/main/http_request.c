@@ -52,8 +52,8 @@ char* serverName = "ubuntu-vm-ip/test_get.php";
 
 // Specify Server Cert file (loaded as binary)
 // Do not change unless the filename is changed!
-extern const char ca_cert_pem_start[] asm("_binary_ca_cert_pem_start");
-extern const char ca_cert_pem_end[]   asm("_binary_ca_cert_pem_end");
+extern const char server_cert_crt_start[] asm("_binary_server_cert_crt_start");
+extern const char server_cert_crt_end[]   asm("_binary_server_cert_crt_end");
 
 // WIFI Defines
 // These are from the station example reference linked to at the wifi function comment
@@ -265,7 +265,7 @@ void http_request(void* args) {
         
         .url = url_str,
         #ifdef FU_HTTPS
-        .cert_pem = (char *)ca_cert_pem_start,
+        .cert_pem = server_cert_crt_start,
         #endif
         .event_handler = _http_event_handler,
         .keep_alive_enable = true,
