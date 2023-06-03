@@ -278,7 +278,7 @@ void http_request(void* args) {
     } else {
         ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
     }
-    ESP_LOGI(TAG, "Server Response:\n%s" local_response_buffer);
+    ESP_LOGI(TAG, "Server Response:\n%s", local_response_buffer);
     
     // Cleanup Client
     esp_http_client_cleanup(client);

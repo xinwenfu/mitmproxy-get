@@ -193,100 +193,114 @@ You will see the responses from the server are modified when looking at the outp
 ## 5. MITM against HTTPS
 
 Mitmproxy is able to [decrypt encrypted traffic on the fly](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/). There are two methods to enable such functionality.
-- Create a private key and self signed certificate for mitmproxy and install mitmproxy’s certificate on the client device, i.e., the ESP32 in our case. This is more realsitic in practice. This method has its own challenge. The attacker needs to embed mitmproxy's certificate into the client device. This often involves quite some reverse engineeering of the client device.
+1. Create a private key and self signed certificate for mitmproxy and install mitmproxy’s certificate on the client device, i.e., the ESP32 in our case. This is more realistic in practice. However, this method has its own challenge. For this to succeed The attacker needs to embed mitmproxy's certificate into the client device. This often requires a significant amount of reverse engineering of the client device.
 
-The figure below shows the web server has a public (contained in the certificate) and private key pair (e<sub>S</sub>, d<sub>S</sub>), where e<sub>S</sub> is the public key and d<sub>S</sub> is the private key. mitmproxy has a public (contained in the certificate) and private key pair (e<sub>m</sub>, d<sub>m</sub>) and is configured to ignore validating the certificate of the web server. The ESP32 contains e<sub>m</sub>.
+The figure below shows the web server has a public (contained in the certificate) and private key pair (e<sub>S</sub>, d<sub>S</sub>), where e<sub>S</sub> is the public key and d<sub>S</sub> is the private key. Mitmproxy has a public (contained in the certificate) and private key pair (e<sub>m</sub>, d<sub>m</sub>) and is configured to ignore validating the certificate of the web server. The ESP32 contains e<sub>m</sub>.
 
 <img src="imgs/mitm-em.png" width="480">
 
-- Use the web server's private key and self-signed server certificate as mitmproxy. The method is not that realistic. In practice, the attacker often wants to analyze the communication between the device and the server. It is not hard for the attacker to get a client device. For example, they can just purchase one. However, i is hard for the attacker to get the server's private key. 
+2. Use the web server's private key and self-signed certificate as the mitmproxy certificate and key pair. The method is not that realistic. In practice, attackers often wants to analyze the communication between a device and server. It is not hard for the attacker to get a client device, from which they can extract the certificate. For example, they can just purchase one. However, it is much harder for the attacker to get the server's private key. 
 
 The figure below shows the web server has a public (contained in the certificate) and private key pair (e<sub>S</sub>, d<sub>S</sub>), where e<sub>S</sub> is the public key and d<sub>S</sub> is the private key. mitmproxy has the same public and private key pair as the web server (e<sub>m</sub>, d<sub>m</sub>). The ESP32 contains e<sub>S</sub>.
 
 <img src="imgs/mitm-es.png" width="480">
 
-We show the first method in [Section 7](#7-Replace-certificate-in-firmware) of this page. The second method is easy to deploy and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. We first generate the required PEM format file required by mitmproxy by running the following command:
-```
-cd ~/Documents
-sudo cat /etc/ssl/private/my-server.key /etc/ssl/certs/server_cert.crt > mitmCA.pem
-```
-    
-Now we can run mitmproxy or mitmdump with two parameters: 
-- --certs *=/home/iot/Documents/mitmCA.pem: configure the self-signed cert
-- --ssl-insecure: do not verify server certs
+We show the first method in [Section 7](#7-Replace-certificate-in-firmware) of this page. The second method is easy to deploy and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. 
 
-Run mitmproxy to observe decrypted https requests
-```
-mitmproxy --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure
-```
-![image](https://user-images.githubusercontent.com/69218457/156868802-d30c23a1-228e-4bcb-acf5-cf2bb56e9474.png)
-
-
-Run mitmdump to change the https requests. Note: *http-query.py* shall be changed to reflect the https url.
-```
-mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
-```
-![VirtualBox_UbuntuIoT_09_04_2022_21_14_18](https://user-images.githubusercontent.com/69218457/162596994-49d7ebc5-37fd-4641-8455-4e4dc13b68bc.png)
+1. We first generate the required PEM format file required by mitmproxy by running the following command:
+    ```sh
+    # Change directory to documents, or wherever you are running mitmproxy from.
+    cd ~/Documents
+    # Create the pem format, sudo is required due to the /etc/ssl/private/my-server.key
+    sudo cat /etc/ssl/private/my-server.key /etc/ssl/certs/server_cert.crt > mitmCA.pem
+    ```
+2. Run mitmproxy with the two parameters described below to observe the decrypted https requests
+    ```
+    mitmproxy --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure
+    ```
+   - Description of parameters 
+     - --certs *=/home/iot/Documents/mitmCA.pem: configure mitmproxy to use the self-signed cert
+     - --ssl-insecure: do not verify server certs, when forwarding to the server
+3. Open the [request.c](http_request/main/request.c) file and modify define macro to activate HTTPS.
+4. Build and flash the new firmware
+5. Observe the captured HTTPS packets 
+    ![image](https://user-images.githubusercontent.com/69218457/156868802-d30c23a1-228e-4bcb-acf5-cf2bb56e9474.png)
+6. After observing the captured packets we can run mitmdump to change the https requests. Note: *http-query.py* will need to be changed to reflect the HTTPS url of the server.
+    ```
+    mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
+    ```
+    ![VirtualBox_UbuntuIoT_09_04_2022_21_14_18](https://user-images.githubusercontent.com/69218457/162596994-49d7ebc5-37fd-4641-8455-4e4dc13b68bc.png)
 
 ## 6. Reset iptables
 
-After the tasks are done, iptables shall be reset. Otherwise, normal web browsing may be messed up.
+After the tasks are done, iptables will need to be reset. Otherwise, normal web browsing may be messed up until the system is restarted.
 
 Reset iptables by restarting the VM, or by running commands. 
-```
+```sh
+# Flush (clear) the nat table rules 
 sudo iptables -t nat -F
+# Disable ipv4 forwarding
 sudo sysctl -w net.ipv4.ip_forward=0
 ```
 
 ## 7. Replace certificate in firmware 
-We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 app that uses https. 
-Here is the scenario that we consider: a victim ESP32 device communicates with the web server via https, and contains the web server's certificate. The attacker wants to use mitmproxy to analyze the network traffic between the ESP32 and web server. We assume the attacker cannot get the web server's private key. Therefore, the attacker needs to generate a private key and certificate for mitmproxy and replace the victim device's certificate with mitmproxy's certificate.
+We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 application that uses HTTPS. 
+Here is the scenario that we consider: a victim ESP32 device communicates with the web server via HTTPS, and contains the web server's certificate. The attacker wants to use mitmproxy to analyze the network traffic between the ESP32 and web server. We assume the attacker cannot get the web server's private key. Therefore, the attacker needs to generate a private key and certificate for mitmproxy and replace the victim device's certificate with mitmproxy's certificate.
 
-In this demo, we use the ESP-IDF environment to build the firmware of the victim ESP32 device. In the ESP-IDF environment, when we create a private key and certificate for the web server, we shall specify a start date earlier today for the certificate. Otherwise, while connecting to the web server, *tls* at the ESP32 will report the error "The certificate validity starts in the future". *faketime* package can be used to this end
-```
+In this demo, we use the ESP-IDF environment to build the firmware of the victim ESP32 device. In the ESP-IDF environment, when we create a private key and certificate for the web server, we will need to specify a start date earlier today for the certificate. Otherwise, while connecting to the web server, *tls* at the ESP32 will report the error "The certificate validity starts in the future". The *faketime* package can be used to this end
+```sh
+# Install the faketime package
 sudo apt install faketime
+# Use faketime to fake the time and generate a certificate
 sudo faketime '2021-12-24 08:15:42' openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mitm_server.key -out mitm_server.crt
 ```
 
-We will use the "esp-idf/examples/protocols/https_request" example and use esp-idf's native *idf.py* commands. Open a terminal and enter the [following command](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/)
-```
-. $HOME/esp/esp-idf/export.sh
-```
+We will bea bale to use the "mitm_request" example provided in this repository and esp-idf's native *idf.py* commands to demonstrate this. 
+
+First open a terminal and enter the [following command](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/).
+    ```
+    . $HOME/esp/esp-idf/export.sh
+    ```
 Another complexity is by default the bootloader of the ESP32 performs image/firmware validation before booting. When we change the firmware with a hex editor and replace only the certificate, the ESP32 will not boot. The checksum for image validation has to be changed too. 
+
 For simplicity, we disable image validation by the bootloader through menuconfig
-```
+```sh
 idf.py menuconfig
 ```
 <img src="imgs/menuconfig-bootload-image-validation.PNG">
-WiFi crendentials are changed through menuconfig for this project 
+
+WiFi crendentials should be set from the precious uses, but they are changed through menuconfig. 
 <img src="imgs/menuconfig-wifi.PNG">
+
 Use the following command to build the firmware
-```
+```sh
 idf.py build
 ```
 Use the following command to flash the firmware and monitor
-```
+```sh
 idf.py -p /dev/ttyUSB0 flash monitor
 ```
 Make sure the firmware works.
 
 
-We show how to dump the firmware and use a hex editor to replace the certificate in the ESP32 with mitmproxy's certificate. We dump the entire flash of the ESP32
-```
+We previosuly showed how to dump the firmware and use a hex editor to modify it in [ESP32 UART and Flash Hack](https://github.com/xinwenfu/ESP32-UART-and-Flash-Hack). Here we will show how you can replace the certificate in the ESP32's firmware with mitmproxy's certificate.
+
+1. Dump the entire flash of the ESP32
+```sh
 esptool.py read_flash 0 0x400000 flash_contents.bin
 ```
-Use [HxD](https://mh-nexus.de/en/hxd/) to find the certificate in the flash and replace it via *Edit* -> *Paste write*
 
-<img src="imgs/HxD.PNG">
-
-The changed firmware can be written back into the ESP32 via the following command
-```
+2. Use [HxD](https://mh-nexus.de/en/hxd/) or [wxhexeditor](https://www.texteditors.org/cgi-bin/wiki.pl?WxHexEditor) to find the certificate in the flash and replace it via *Edit* -> *Paste write*
+    <img src="imgs/HxD.PNG">
+3. The modified firmware can now be written back into the ESP32 via the following command
+```sh
 esptool.py write_flash 0 flash_contents.bin
 ```
 
 Now we can perform the mitmproxy attack again with the following configurations 
 - The web server has its own private key and certificate. 
 - mitmproxy has its own private key and certificate. 
+  - We can generate the PEM file used with ``` cat mitm_server.key mitm server.crt > mitm_server.pem ```
 - The ESP32 firmware uses mitmproxy's certificate.
 
 The picture below shows mitmproxy can intercept the https request from the ESP32.
@@ -295,14 +309,14 @@ The picture below shows mitmproxy can intercept the https request from the ESP32
 ## Notes
 
 ### Reset https
-To reset apache2/remove the apache2 config files,
-```
+To reset apache2 and remove the apache2 config files use the following command.
+```sh
 sudo apt-get purge apache2
 ```
 
 ### Fix php
-After installing php, if php does not work, use the following commands
-```
+After installing php, if php does not work, use the following commands to fix it.
+```sh
 sudo a2dismod mpm_event
 sudo systemctl restart apache2
 sudo a2enmod mpm_prefork
@@ -311,11 +325,10 @@ sudo a2enmod php7.0
 sudo systemctl restart apache2
 ```
 
-
 ### Disable apache2 virtual host entry
 
 The following [commands](https://itorn.net/disable-remove-virtual-host-website-entry-in-apache/) disable an apache2 virtual host (server) and restart apache2.
-```
+```sh
 sudo a2dissite my-server
 sudo service apache2 reload
 ```
@@ -324,7 +337,7 @@ sudo service apache2 reload
 
 To intercept requests with specific URLs, you need to enable the interception function and using specific filter expressions.
 
-To enable the interception function, press **i**. You will see shown at the bottom of the console.
+To enable the interception function, press **i** while using mitmproxy. You will see shown at the bottom of the console.
 ```
 set intercept ''
 ```
@@ -357,4 +370,3 @@ Press *q* to quit editing mode.
 Press *a* to resume the intercepted flow. You will find the changed values shown in your browser.
 
 To stop mitmproxy, Press *Ctrl+c*, then press *y*.
-
