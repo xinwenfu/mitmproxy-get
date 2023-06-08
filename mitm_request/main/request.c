@@ -211,12 +211,14 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
           }
           output_len = 0;
           break;
+/* This does not work (exist) in esp-idf version 4.4
       case HTTP_EVENT_REDIRECT:
           ESP_LOGD(TAG, "HTTP_EVENT_REDIRECT");
           esp_http_client_set_header(evt->client, "From", "user@example.com");
           esp_http_client_set_header(evt->client, "Accept", "text/html");
           esp_http_client_set_redirection(evt->client);
           break;
+*/
   }
   return ESP_OK;
 }
@@ -248,13 +250,12 @@ void http_request(void* args) {
     // Generate URL using the Temp and Humidity values
     #ifdef FU_HTTP
     sprintf(url_str, "http://%s?Temperature=%.2f&Humidity=%.2f",serverName,temp,humidity);
-    ESP_LOGI(TAG, "URL: %s", url_str);
     # endif
     #ifdef FU_HTTPS
     sprintf(url_str, "https://%s?Temperature=%.2f&Humidity=%.2f",serverName,temp,humidity);
-    ESP_LOGI(TAG, "URL: %s", url_str);
     #endif
-    
+    ESP_LOGI(TAG, "URL: %s", url_str);
+
     // HTTP options are defined at 
     esp_http_client_config_t config = {
         
@@ -272,7 +273,7 @@ void http_request(void* args) {
     // Perform GET Request
     esp_err_t err = esp_http_client_perform(client);
     if (err == ESP_OK) {
-        ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %"PRIu64,
+        ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %d",
                 esp_http_client_get_status_code(client),
                 esp_http_client_get_content_length(client));
     } else {
@@ -421,7 +422,7 @@ int aht_read(float* temperature, float* humidity) {
   dev.type = AHT_TYPE;
 
   // Initalize AHT Device
-  ESP_ERROR_CHECK(aht_init_desc(&dev, AHT_I2C_ADDRESS_GND, 0, SDA_GPIO, SCL_GPIO));
+  ESP_ERROR_CHECK(aht_init_desc(&dev, AHT_I2C_ADDRESS_GND, (i2c_port_t)0, SDA_GPIO, SCL_GPIO));
   ESP_ERROR_CHECK(aht_init(&dev));
 
   // Calibrate AHT Device
