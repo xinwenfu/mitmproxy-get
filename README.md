@@ -91,6 +91,9 @@ sudo apt install mitmproxy
 ```
 
 ### Clone this project
+
+**Note**: By default, this project is already located in the ``` ~/esp/IoT-Examples/ ``` directory of the Ubuntu VM.
+
 Download this project to Ubuntu VM, start VS code and use *File*->*Open Folder...* to load the project.
 ```sh
 cd ~/Documents
