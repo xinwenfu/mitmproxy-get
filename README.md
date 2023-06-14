@@ -17,7 +17,7 @@ The figure below shows how the attacker can use a man-in-the-middle (MITM) attac
 <img src="imgs/mitm.png"  height="220">
 
 ## 1. Hardware setup
-This project requires an ES32 board, along with the installation of [esp-idf](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/linux-macos-setup.html) and [esp-idf-lib](https://esp-idf-lib.readthedocs.io/en/latest/). These are already installed in the Ubuntu-VM and located at ``` /home/iot/esp/ ```, the AHT sensor library is located in the ``` /home/iot/esp/esp-idf-lib/components ``` directory. The ESP32 will read the AHT data and send it to a web server at the Ubuntu VM. The IP address of the web server is hard-coded into the firmware code. The ESP32 and Ubuntu VM should be connected to the same WiFi router.
+This project requires an ES32 board, along with the installation of [esp-idf](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/linux-macos-setup.html) and [esp-idf-lib](https://esp-idf-lib.readthedocs.io/en/latest/). These are already installed in the Ubuntu-VM; With esp-idf located at ``` /home/iot/esp/ ```, and the AHT sensor library is located in the ``` /home/iot/esp/esp-idf-lib/components ``` directory. The ESP32 will read the AHT data and send it to a web server at the Ubuntu VM. The IP address of the web server is hard-coded into the firmware code. The ESP32 and Ubuntu VM should be connected to the same WiFi router.
 
 
 **// NEED NEW IMAGE**
