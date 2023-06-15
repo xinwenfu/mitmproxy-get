@@ -232,7 +232,7 @@ We show the first method in [Section 7](#7-Replace-certificate-in-firmware) of t
     ```
     mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
     ```
-    ![VirtualBox_UbuntuIoT_09_04_2022_21_14_18](https://user-images.githubusercontent.com/69218457/162596994-49d7ebc5-37fd-4641-8455-4e4dc13b68bc.png)
+    ![VirtualBox_UbuntuIoT_09_04_2022_21_14_18](imgs/HTTPS-MITM.png)
 
 ## 6. Reset iptables
 
