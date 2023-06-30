@@ -12,7 +12,7 @@ The figure below shows the original network setup. The ESP32 communicates with t
 
 <img src="imgs/original.png" alt="Original Setup" height="220"/>
 
-The figure below shows how the attacker can use a man-in-the-middle (MITM) attack to perform traffic analysis and understand the communication protocol. The mitmproxy system sits between the ESP32 and web server, and because of this mitmproxy can intercept the HTTP/HTTPS traffic. This demonstration utilizes a simplified scenrio: mitmproxy is hosted on the same computer as the web server. In reality, mitmproxy can be hosted on a standalone computer, which can work as a WiFi router to which the esp32 would connect. In this more complicated scenario, we can continue to intercept esp32 traffic and analyze the communication protocol.
+The figure below shows how the attacker can use a man-in-the-middle (MITM) attack to perform traffic analysis and understand the communication protocol. The mitmproxy system sits between the ESP32 and web server, and because of this mitmproxy can intercept the HTTP/HTTPS traffic. This demonstration utilizes a simplified scenario: mitmproxy is hosted on the same computer as the web server. In reality, mitmproxy can be hosted on a standalone computer, which can work as a WiFi router to which the esp32 would connect. In this more complicated scenario, we can continue to intercept esp32 traffic and analyze the communication protocol.
 
 <img src="imgs/mitm.png"  height="220">
 
@@ -111,7 +111,7 @@ Enable the *FU_HTTPS* definition as follows to connect to the server using HTTPS
 ```
 
    
-## 3. Set up iptables to intercept http traffic
+## 3. Set up iptables to intercept HTTP traffic
 Mitmproxy listens on port 8080 by default. To monitor HTTP and HTTPS flows, we need to redirect traffic sent to ports 80 and 443 of the host using the [iptables](https://linux.die.net/man/8/iptables) tool. We use iptables to redirect traffic to the port that mitmproxy listens on. Take note that these changes will be lost once the computer reboots unless additional measures are taken.
 
 Enable IP forwarding with the following command.
