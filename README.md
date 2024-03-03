@@ -154,10 +154,10 @@ Run the HTTP version of the firmware on ESP32 and observe the HTTP requests in m
     char* serverName = "ubuntu-vm-ip/test_get.php";
     ```
 3. Modify the configuration using ``` idf.py menuconfig ``` in the ESP-IDF terminal or GUI option.
-    * Add the WiFi SSID and Password in the Example WIFI Configuration menu.
+    * Add the WiFi SSID and Password in the Example WIFi Configuration menu.
 4. Build the project.
 5. Flash the project.
-6. Utilize the Serial Monitor to verify the program is connecting to the WiFI and sending requests.
+6. Utilize the Serial Monitor to verify the program is connecting to the WiFi and sending requests.
 
 ![image](https://user-images.githubusercontent.com/69218457/156868428-a9f0f869-2e35-40e3-afdb-652006ec86c6.png)    
     
