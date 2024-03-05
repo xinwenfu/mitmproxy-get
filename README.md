@@ -45,7 +45,7 @@ The following video shows an example of how we can set up HTTPS on the Apache we
 
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
-- The following command creates the HTTPS web server's private key (/etc/ssl/private/server_key.key) and self-signed SSL certificate (/etc/ssl/certs/my-server.crt). Do NOT protect the private key of the web server with a password since the web server will not be able to start without a user entering the password. While running this command, the *common name* of the web server must be the IP address of the Ubuntu VM what hosts the web server.
+- The following command creates the HTTPS web server's private key (/etc/ssl/private/server_key.key) and self-signed SSL certificate (/etc/ssl/certs/server_cert.crt). Do NOT protect the private key of the web server with a password since the web server will not be able to start without a user entering the password. While running this command, the *common name* of the web server must be the IP address of the Ubuntu VM what hosts the web server.
     ```sh
     sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/server_key.key -out /etc/ssl/certs/server_cert.crt
     ```
