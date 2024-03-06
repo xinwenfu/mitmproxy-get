@@ -245,7 +245,7 @@ sudo wireshark
 ```
 - Select a network adaptor to start capture
 
-<img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/93d44843-eddf-4a1f-b950-d921cf30ae61" width=640>
+<img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/93d44843-eddf-4a1f-b950-d921cf30ae61" width=720>
 
 - Start mitmproxy saving SSL/TLS master secrets into sslkeylogfile.txt
 ```
@@ -255,7 +255,7 @@ SLKEYLOGFILE="$PWD/sslkeylogfile.txt" mitmproxy --certs *=/home/iot/esp/IoT-Exam
 - Stop wireshark capture
 
 - Right click on one TLS ppacket and *Follow* -> *TLS Stream*
-<img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/a20c7b67-b8a8-48f4-9253-c53155f8dc71" width=640>
+<img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/a20c7b67-b8a8-48f4-9253-c53155f8dc71" width=720>
 
 **Question**: Can TLS traffic be decrypted?
 
