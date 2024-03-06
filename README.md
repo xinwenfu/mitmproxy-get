@@ -239,13 +239,13 @@ We show the first method in [Section 7](#7-optional-replace-certificate-in-firmw
     ![VirtualBox_UbuntuIoT_09_04_2022_21_14_18](imgs/HTTPS-MITM.png)
 
 ## 6. Decrypt TLS traffic
-Start wireshark in a terminal
+- Start wireshark in a terminal
 ```
 sudo wireshark
 ```
-Select a network adaptor to start capture
+- Select a network adaptor to start capture
 
-<img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/93d44843-eddf-4a1f-b950-d921cf30ae61" width=512>
+<img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/93d44843-eddf-4a1f-b950-d921cf30ae61" width=640>
 
 
 ## 7. Reset iptables
