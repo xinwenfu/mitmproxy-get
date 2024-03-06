@@ -239,6 +239,8 @@ We show the first method in [Section 8](#8-optional-replace-certificate-in-firmw
     ![VirtualBox_UbuntuIoT_09_04_2022_21_14_18](imgs/HTTPS-MITM.png)
 
 ## 6. Decrypt TLS traffic
+Mitmproxy can be used to [dump SSL/TLS master keys](https://docs.mitmproxy.org/stable/howto-wireshark-tls/), which can be fed into Wireshark for decryption of SSL/TLS traffic.
+
 Make sure either mitmproxy or mitmdump is stopped. Other settings are the same as Step 5.
 
 - Start wireshark in a terminal
