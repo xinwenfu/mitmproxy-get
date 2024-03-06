@@ -16,14 +16,14 @@ The figure below shows how the attacker can use a man-in-the-middle (MITM) attac
 
 <img src="imgs/mitm.png"  height="220">
 
-## 1. Hardware setup (Optional)
+## 1. (Optional) Hardware setup 
 This project requires an ES32 board, along with the installation of [esp-idf](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/linux-macos-setup.html) and [esp-idf-lib](https://esp-idf-lib.readthedocs.io/en/latest/). These are already installed in the Ubuntu-VM; With esp-idf located at ``` /home/iot/esp/ ```, and the AHT sensor library is located in the ``` /home/iot/esp/esp-idf-lib/components ``` directory. The ESP32 will read the AHT data and send it to a web server at the Ubuntu VM. The IP address of the web server is hard-coded into the firmware code. The ESP32 and Ubuntu VM should be connected to the same WiFi router.
 
 <img src="imgs/mitm-labsetup.jpg">
 
-## 2. Software setup (Optional)
+## 2. Software setup 
 
-### Install Apache web server on the Ubuntu VM
+### (Optional) Install Apache web server on the Ubuntu VM
 
 The following commands can be used in a terminal at the Ubuntu VM to install an Apache web server. Take note that the *#* indicates a comment in the code block below.
 ```sh
@@ -36,7 +36,7 @@ You can test the installed server by typing the IP address of the host VM in a w
 ![image](https://user-images.githubusercontent.com/69218457/156863561-96d0e26f-c1bf-4c27-aa16-26b0ba8c8a1a.png)
 
 
-### Enable HTTPS on Apache web server (Optional)
+### Enable HTTPS on Apache web server
 
 The hardest part of this setup is enabling HTTPS on the Apache web server. Please refer to [How To Enable HTTPS Protocol with Apache 2 on Ubuntu 20.04](https://www.rosehosting.com/blog/how-to-enable-https-protocol-with-apache-2-on-ubuntu-20-04/) for more details. 
 
@@ -45,7 +45,7 @@ The following video shows an example of how we can set up HTTPS on the Apache we
 
 [![Demo Video](https://img.youtube.com/vi/4PwXGR39zpg/0.jpg)](https://youtu.be/4PwXGR39zpg)
 
-- The following command creates the HTTPS web server's private key (/etc/ssl/private/server_key.key) and self-signed SSL certificate (/etc/ssl/certs/server_cert.crt). Do NOT protect the private key of the web server with a password since the web server will not be able to start without a user entering the password. While running this command, the *common name* of the web server must be the IP address of the Ubuntu VM what hosts the web server.
+- The following command creates the HTTPS web server's private key (/etc/ssl/private/server_key.key) and self-signed SSL certificate (/etc/ssl/certs/server_cert.crt). Do **NOT** protect the private key of the web server with a password since the web server will not be able to start without a user entering the password. While running this command, the *common name* of the web server must be the IP address of the Ubuntu VM what hosts the web server.
     ```sh
     sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/server_key.key -out /etc/ssl/certs/server_cert.crt
     ```
@@ -65,7 +65,7 @@ The following video shows an example of how we can set up HTTPS on the Apache we
     systemctl reload apache2
     ```
 
-### Install PHP (Optional)
+### (Optional) Install PHP 
 Install PHP and the Apache PHP module by running the following commands.
 ```sh
 sudo apt install php libapache2-mod-php
@@ -77,18 +77,18 @@ sudo systemctl restart apache2.service
 
 Refer to the [Fix php](#Fix-php-not-working) section if PHP does not work.
 
-### Copy PHP script to web folder (Optional)
+### (Optional) Copy PHP script to web folder 
 Copy the [test_get.php](web/test_get.php) file in this repository to the ``` /var/www/html ``` directory on the Ubuntu VM. The PHP script returns the temperature and humidity data sent from the ESP32 back to the ESP32 for the purpose of acknowledgment. 
 We can also test the server by visiting the following link in a browser: *https://Ubuntu-VM-IP/test_get.php?Temperature=21&Humidity=20*, which sends Temperature=21 and Humidity=20 values to the web server.
 
 
-### Install mitmproxy (Optional)
+### (Optional) Install mitmproxy 
 Download mitmproxy using the command below. Note that if you ran ``` sudo apt update ```  previously, it is not needed here.
 ```sh
 sudo apt install mitmproxy
 ```
 
-### Clone this project (Optional)
+### (Optional) Clone this project 
 
 **Note**: By default, this project is already located in the ``` ~/esp/IoT-Examples/ ``` directory of the Ubuntu VM.
 
@@ -96,18 +96,6 @@ Download this project to Ubuntu VM, start VS code and use *File*->*Open Folder..
 ```sh
 cd ~/Documents
 git clone https://github.com/xinwenfu/mitmproxy-get.git
-```
-**Note**:
-The code located in ``` ./http_request ``` directory of this project supports both HTTP and HTTPS connections through a macro definition in the code.  Make sure the code has the correct macro definition defined in the tasks described below. Also make sure both macro definitions **are not** used simultaneously.
-
-Enable the *FU_HTTP* definition as follows to connect to the server using HTTP.
-```
-#define FU_HTTP
-```
-
-Enable the *FU_HTTPS* definition as follows to connect to the server using HTTPS.
-```
-#define FU_HTTPS
 ```
 
    
@@ -153,6 +141,18 @@ Run the HTTP version of the firmware on ESP32 and observe the HTTP requests in m
     // Change ubuntu-vm-ip below to your Ubuntu VM IP
     char* serverName = "ubuntu-vm-ip/test_get.php";
     ```
+**Note**:
+The code *request.c* supports both HTTP and HTTPS connections through a macro definition in the code.  Make sure the code has the correct macro definition defined in the tasks described below. Also make sure both macro definitions **are not** used simultaneously.
+
+Enable the *FU_HTTP* definition as follows to connect to the server using HTTP.
+```
+#define FU_HTTP
+```
+
+Enable the *FU_HTTPS* definition as follows to connect to the server using HTTPS.
+```
+#define FU_HTTPS
+```
 3. Modify the configuration using ``` idf.py menuconfig ``` in the ESP-IDF terminal or GUI option.
     * Add the WiFi SSID and Password in the Example WIFi Configuration menu.
 4. Build the project.
