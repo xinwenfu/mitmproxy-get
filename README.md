@@ -211,7 +211,7 @@ The figure below shows the web server has a public (contained in the certificate
 
 <img src="imgs/mitm-es.png" width="480">
 
-We show the first method in [Section 7](#7-optional-replace-certificate-in-firmware) of this page. The second method is easy to deploy, and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. 
+We show the first method in [Section 8](#8-optional-replace-certificate-in-firmware) of this page. The second method is easy to deploy, and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. 
 
 1. We first generate the required PEM format file required by mitmproxy by running the following command:
     ```sh
@@ -246,6 +246,24 @@ sudo wireshark
 - Select a network adaptor to start capture
 
 <img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/93d44843-eddf-4a1f-b950-d921cf30ae61" width=640>
+
+- Start mitmproxy saving SSL/TLS master secrets into sslkeylogfile.txt
+```
+SLKEYLOGFILE="$PWD/sslkeylogfile.txt" mitmproxy --certs *=/home/iot/esp/IoT-Examples/mitmproxy-get/mitmproxy/mitmCA.pem --ssl-insecure
+```
+
+- Stop wireshark capture
+
+- Right click on one TLS ppacket and *Follow* -> *TLS Stream*
+<img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/a20c7b67-b8a8-48f4-9253-c53155f8dc71" width=640>
+
+**Question**: Can TLS traffic be decrypted?
+
+- Specify the key file path in Wireshark via Edit -> Preferences -> Protocols -> TLS -> (Pre)-Master-Secret log filename
+
+- Right click on the same TLS ppacket and *Follow* -> *TLS Stream*
+
+**Question**: Can TLS traffic be decrypted now?
 
 
 ## 7. Reset iptables
