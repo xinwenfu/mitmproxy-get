@@ -211,7 +211,7 @@ The figure below shows the web server has a public (contained in the certificate
 
 <img src="imgs/mitm-es.png" width="480">
 
-We show the first method in [Section 7](#7-Replace-certificate-in-firmware) of this page. The second method is easy to deploy, and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. 
+We show the first method in [Section 7](#7-optional-replace-certificate-in-firmware) of this page. The second method is easy to deploy, and we use this method to demonstrate the principle of decrypting HTTPS traffic with mitmproxy. 
 
 1. We first generate the required PEM format file required by mitmproxy by running the following command:
     ```sh
