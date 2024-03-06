@@ -238,7 +238,17 @@ We show the first method in [Section 7](#7-optional-replace-certificate-in-firmw
     ```
     ![VirtualBox_UbuntuIoT_09_04_2022_21_14_18](imgs/HTTPS-MITM.png)
 
-## 6. Reset iptables
+## 6. Decrypt TLS traffic
+Start wireshark in a terminal
+```
+sudo wireshark
+```
+Select a network adaptor to start capture
+
+<img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/93d44843-eddf-4a1f-b950-d921cf30ae61" width=512>
+
+
+## 7. Reset iptables
 
 After the tasks are done, iptables will need to be reset. Otherwise, normal web browsing may be messed up until the system is restarted.
 
@@ -250,7 +260,7 @@ sudo iptables -t nat -F
 sudo sysctl -w net.ipv4.ip_forward=0
 ```
 
-## 7. (Optional) Replace certificate in firmware 
+## 8. (Optional) Replace certificate in firmware 
 We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 application that uses HTTPS. 
 Here is the scenario that we consider: a victim ESP32 device communicates with the web server via HTTPS, and contains the web server's certificate. The attacker wants to use mitmproxy to analyze the network traffic between the ESP32 and the web server. We assume the attacker cannot get the web server's private key. Therefore, the attacker needs to generate a private key and certificate for mitmproxy and replace the victim device's certificate with mitmproxy's certificate.
 
