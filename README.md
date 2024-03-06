@@ -140,7 +140,7 @@ mitmproxy
 Let’s test if mitmproxy can detect and monitor the HTTP flows between the ESP32 and Apache web server.
 
 Run the HTTP version of the firmware on ESP32 and observe the HTTP requests in mitmproxy. This can be done with the following steps.
-1. Open the *mitm_request* directory in this repository.  
+1. Open the project in the *mitm_request* directory.  
 2. Open the [request.c](http_request/main/request.c) file and modify the serverName variable. 
     ```c
     // Change ubuntu-vm-ip below to your Ubuntu VM IP
