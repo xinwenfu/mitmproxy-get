@@ -228,10 +228,11 @@ We show the first method in [Section 7](#7-Replace-certificate-in-firmware) of t
      - --certs *=/home/iot/Documents/mitmCA.pem: configure mitmproxy to use the self-signed cert
      - --ssl-insecure: do not verify server certs, when forwarding to the server
 3. Open the [request.c](http_request/main/request.c) file and modify define macro to activate HTTPS.
-4. Build and flash the new firmware
-5. Observe the captured HTTPS packets 
+4. Copy the web server's certificate to the folder of *server_certs* of this project
+5. Build and flash the new firmware
+6. Observe the captured HTTPS packets 
     ![image](https://user-images.githubusercontent.com/69218457/156868802-d30c23a1-228e-4bcb-acf5-cf2bb56e9474.png)
-6. After observing the captured packets, we can run mitmdump to change the HTTPS requests. Note: *http-query.py* will need to be changed to reflect the HTTPS url of the server.
+7. After observing the captured packets, we can run mitmdump to change the HTTPS requests. Note: *http-query.py* will need to be changed to reflect the HTTPS url of the server.
     ```
     mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
     ```
@@ -249,7 +250,7 @@ sudo iptables -t nat -F
 sudo sysctl -w net.ipv4.ip_forward=0
 ```
 
-## 7. Replace certificate in firmware 
+## 7. (Optional) Replace certificate in firmware 
 We now demonstrate a more realistic example of using mitmproxy to perform traffic analysis of the ESP32 application that uses HTTPS. 
 Here is the scenario that we consider: a victim ESP32 device communicates with the web server via HTTPS, and contains the web server's certificate. The attacker wants to use mitmproxy to analyze the network traffic between the ESP32 and the web server. We assume the attacker cannot get the web server's private key. Therefore, the attacker needs to generate a private key and certificate for mitmproxy and replace the victim device's certificate with mitmproxy's certificate.
 
