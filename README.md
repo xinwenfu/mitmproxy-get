@@ -120,6 +120,11 @@ We can check that the iptables rules have been added using the following command
 sudo iptables -t nat -L
 ```
 
+We can remove the created iptables rules as follows
+```sh
+sudo iptables -t nat -F
+```
+
 ## 4. MITM against HTTP
 
 ### Start mitmproxy
@@ -213,7 +218,7 @@ We show the first method in [Section 7](#7-Replace-certificate-in-firmware) of t
     # Change directory to documents, or wherever you are running mitmproxy from.
     cd ~/Documents
     # Create the pem format, sudo is required due to the /etc/ssl/private/my-server.key
-    sudo cat /etc/ssl/private/my-server.key /etc/ssl/certs/server_cert.crt > mitmCA.pem
+    sudo cat /etc/ssl/private/server_key.key /etc/ssl/certs/server_cert.crt > mitmCA.pem
     ```
 2. Run mitmproxy with the two parameters described below to observe the decrypted HTTPS requests
     ```
