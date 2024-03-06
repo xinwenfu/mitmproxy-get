@@ -232,22 +232,24 @@ We show the first method in [Section 8](#8-optional-replace-certificate-in-firmw
 5. Build and flash the new firmware
 6. Observe the captured HTTPS packets 
     ![image](https://user-images.githubusercontent.com/69218457/156868802-d30c23a1-228e-4bcb-acf5-cf2bb56e9474.png)
-7. After observing the captured packets, we can run mitmdump to change the HTTPS requests. Note: *http-query.py* will need to be changed to reflect the HTTPS url of the server.
+7. After observing the captured packets, stop mitmproxy and now we run mitmdump to change the HTTPS requests. Note: *http-query.py* will need to be changed to reflect the HTTPS url of the server.
     ```
     mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
     ```
     ![VirtualBox_UbuntuIoT_09_04_2022_21_14_18](imgs/HTTPS-MITM.png)
 
 ## 6. Decrypt TLS traffic
+Make sure either mitmproxy or mitmdump is stopped. Other settings are the same as Step 5.
+
 - Start wireshark in a terminal
 ```
 sudo wireshark
 ```
-- Select a network adaptor to start capture
+- Select a network adaptor and start capture
 
 <img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/93d44843-eddf-4a1f-b950-d921cf30ae61" width=720>
 
-- Start mitmproxy saving SSL/TLS master secrets into sslkeylogfile.txt
+- Start mitmproxy saving SSL/TLS master secrets into sslkeylogfile.txt as follows.
 ```
 SLKEYLOGFILE="$PWD/sslkeylogfile.txt" mitmproxy --certs *=/home/iot/esp/IoT-Examples/mitmproxy-get/mitmproxy/mitmCA.pem --ssl-insecure
 ```
@@ -260,6 +262,9 @@ SLKEYLOGFILE="$PWD/sslkeylogfile.txt" mitmproxy --certs *=/home/iot/esp/IoT-Exam
 **Question**: Can TLS traffic be decrypted?
 
 - Specify the key file path in Wireshark via Edit -> Preferences -> Protocols -> TLS -> (Pre)-Master-Secret log filename
+
+<img src="https://github.com/xinwenfu/mitmproxy-get/assets/69218457/3669fc34-09fd-4d5a-bb8c-e736693fbf79" width=512>
+
 
 - Right click on the same TLS ppacket and *Follow* -> *TLS Stream*
 
