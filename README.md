@@ -90,7 +90,7 @@ sudo apt install mitmproxy
 
 ### (Optional) Clone this project 
 
-**Note**: By default, this project is already located in the ``` ~/esp/IoT-Examples/ ``` directory of the Ubuntu VM.
+**Note**: By default, this project is already located in the ``` ~/esp/IoT-Examples/mitmproxy-get/mitm_request``` directory of the Ubuntu VM.
 
 Download this project to Ubuntu VM, start VS code and use *File*->*Open Folder...* to load the project.
 ```sh
@@ -229,10 +229,12 @@ We show the first method in [Section 8](#8-optional-replace-certificate-in-firmw
      - --ssl-insecure: do not verify server certs, when forwarding to the server
 3. Open the [request.c](http_request/main/request.c) file and modify define macro to activate HTTPS.
 4. Copy the web server's certificate to the folder of *server_certs* of this project
-5. Build and flash the new firmware
-6. Observe the captured HTTPS packets 
+5. Modify the configuration using ``` idf.py menuconfig ``` in the ESP-IDF terminal or GUI option.
+    * Add the WiFi SSID and Password in the Example WIFi Configuration menu.
+6. Build and flash the new firmware
+7. Observe the captured HTTPS packets 
     ![image](https://user-images.githubusercontent.com/69218457/156868802-d30c23a1-228e-4bcb-acf5-cf2bb56e9474.png)
-7. After observing the captured packets, stop mitmproxy and now we run mitmdump to change the HTTPS requests. Note: *http-query.py* will need to be changed to reflect the HTTPS url of the server.
+8. After observing the captured packets, stop mitmproxy and now we run mitmdump to change the HTTPS requests. Note: *http-query.py* will need to be changed to reflect the HTTPS url of the server.
     ```
     mitmdump --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure -s ./http-query.py
     ```
