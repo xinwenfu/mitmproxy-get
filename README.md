@@ -11,6 +11,10 @@ Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS,
 * Make sure the Ubuntu VM uses the bridged adapter.
 * Make sure the IoT kit and Ubuntu VM connect to the same WiFi router/AP so that they can communicate with each other.
 
+Here is a video demo
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/dZpiiLGJJks/0.jpg)](https://youtu.be/dZpiiLGJJks)
+
 ## Goal
 The figure below shows the original network setup. The ESP32 communicates with the web server using HTTP or HTTPS. The attacker wants to find out the protocol used in the communication between the ESP32 and web server.
 
