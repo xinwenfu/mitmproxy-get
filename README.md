@@ -259,7 +259,7 @@ sudo wireshark
 
 - Start mitmproxy saving SSL/TLS master secrets into sslkeylogfile.txt as follows.
 ```
-SLKEYLOGFILE="$PWD/sslkeylogfile.txt" mitmproxy --certs *=/home/iot/esp/IoT-Examples/mitmproxy-get/mitmproxy/mitmCA.pem --ssl-insecure
+SSLKEYLOGFILE="$PWD/sslkeylogfile.txt" mitmproxy --certs *=/home/iot/Documents/mitmCA.pem --ssl-insecure
 ```
 
 - Stop wireshark capture
