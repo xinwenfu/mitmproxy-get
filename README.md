@@ -8,7 +8,7 @@ Mitmproxy is a set of SSL/TLS-capable proxy tools that can intercept HTTP/HTTPS,
 - *mitmdump*: the command-line version of mitmproxy.
 
 **Note**: 
-* Make sure the Ubuntu VM uses the bridged adapter
+* Make sure the Ubuntu VM uses the bridged adapter.
 * Make sure the IoT kit and Ubuntu VM connect to the same WiFi router/AP so that they can communicate with each other.
 
 ## Goal
